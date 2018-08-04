@@ -70,4 +70,58 @@ describe("Line execute",function(){
       assert.throws(()=>Line.create(10,"CMP",["B","F"]),InvalidInstructionException);
     });
   });
+
+  describe("jmp",function(){
+    it("should execute a jmp with valid numeric value",function(){
+      let line = Line.create(10,"JMP",["20"]);
+      let currRegs = {A:0,B:0,C:0,D:0};
+      let currFlags = {EQ:0,NE:0,GT:0,LT:0};
+      let {currLine,regs,flags,nextLine} = line.execute(currRegs,currFlags);
+      assert.equal(10,currLine);
+      assert.equal("20",nextLine);
+      assert.deepEqual({A:0,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:0,NE:0,GT:0,LT:0},flags);
+    });
+
+    it("should throw an error when JMP has an invalid argument",function(){
+      assert.throws(()=>Line.create(10,"JMP",[]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"JMP",["B"]),InvalidInstructionException);
+    });
+  });
+
+  describe("je",function(){
+    it("should execute a je with valid numeric value",function(){
+      let line = Line.create(10,"JE",["20"]);
+      let currRegs = {A:0,B:0,C:0,D:0};
+      let currFlags = {EQ:1,NE:0,GT:0,LT:0};
+      let {currLine,regs,flags,nextLine} = line.execute(currRegs,currFlags);
+      assert.equal(10,currLine);
+      assert.equal("20",nextLine);
+      assert.deepEqual({A:0,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:1,NE:0,GT:0,LT:0},flags);
+    });
+
+    it("should throw an error when JE has an invalid argument",function(){
+      assert.throws(()=>Line.create(10,"JE",[]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"JE",["B"]),InvalidInstructionException);
+    });
+  });
+
+  describe("jne",function(){
+    it("should execute a jne with valid numeric value",function(){
+      let line = Line.create(10,"JNE",["20"]);
+      let currRegs = {A:0,B:0,C:0,D:0};
+      let currFlags = {EQ:0,NE:1,GT:1,LT:0};
+      let {currLine,regs,flags,nextLine} = line.execute(currRegs,currFlags);
+      assert.equal(10,currLine);
+      assert.equal("20",nextLine);
+      assert.deepEqual({A:0,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:0,NE:1,GT:1,LT:0},flags);
+    });
+
+    it("should throw an error when JNE has an invalid argument",function(){
+      assert.throws(()=>Line.create(10,"JNE",[]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"JNE",["B"]),InvalidInstructionException);
+    });
+  });
 });
