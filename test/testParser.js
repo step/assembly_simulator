@@ -34,5 +34,12 @@ describe("should not parse illegal forms",function(){
     assert.throws(()=>parse("ADD A,A"),InvalidInstructionException);
     assert.throws(()=>parse("10ADD A,A"),InvalidInstructionException);
     assert.throws(()=>parse("10 ADDA,A"),InvalidInstructionException);
+    assert.throws(()=>parse("10 ADD A,"),InvalidInstructionException);
+    assert.throws(()=>parse("10 ADD ,A"),InvalidInstructionException);
+    assert.throws(()=>parse("10+ADD ,A"),InvalidInstructionException);
+    assert.throws(()=>parse("10 ADD -2,A"),InvalidInstructionException);
+    assert.throws(()=>parse("10 ADD A,-2"),InvalidInstructionException);
+    assert.throws(()=>parse("10 ADD A -2"),InvalidInstructionException);
+    assert.throws(()=>parse("-10 ADD A -2"),InvalidInstructionException);
   });
 });
