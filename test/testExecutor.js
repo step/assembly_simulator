@@ -29,4 +29,19 @@ describe("executing multiple lines",function(){
     assert.deepEqual({A:1,B:2,C:3,D:4},executor.getRegs());
     assert.deepEqual({NE:0,EQ:1,LT:0,GT:0},executor.getFlags());
   });
+
+  it("should run a loop 3 times",function(){
+    const executor = new Executor();
+    const program = new Lines();
+    program.add(Line.create("10","start"));
+    program.add(Line.create("20","mov",["A",0]));
+    program.add(Line.create("30","cmp",["A",2]));
+    program.add(Line.create("40","je",["70"]));
+    program.add(Line.create("50","add",["A",1]));
+    program.add(Line.create("60","jmp",["30"]));
+    program.add(Line.create("70","mov",["B",100]));
+    executor.execute(program);
+    assert.deepEqual({A:2,B:100,C:0,D:0},executor.getRegs());
+    assert.deepEqual({NE:0,EQ:1,LT:0,GT:0},executor.getFlags());
+  });
 });

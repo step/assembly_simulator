@@ -71,6 +71,34 @@ describe("Line execute",function(){
     });
   });
 
+  describe("add",function(){
+    it("should execute a add val to reg instruction",function(){
+      let line = Line.create(10,"ADD",["A","10"]);
+      let currRegs = {A:1,B:0,C:0,D:0};
+      let currFlags = {EQ:0,NE:0,GT:0,LT:0};
+      let {currLine,regs,flags} = line.execute(currRegs,currFlags);
+      assert.equal(10,currLine);
+      assert.deepEqual({A:11,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:0,NE:0,GT:0,LT:0},flags);
+    });
+
+    it("should execute a add reg to reg instruction",function(){
+      let line = Line.create(10,"ADD",["A","B"]);
+      let currRegs = {A:1,B:10,C:0,D:0};
+      let currFlags = {EQ:0,NE:0,GT:0,LT:0};
+      let {currLine,regs,flags} = line.execute(currRegs,currFlags);
+      assert.equal(10,currLine);
+      assert.deepEqual({A:11,B:10,C:0,D:0},regs);
+      assert.deepEqual({EQ:0,NE:0,GT:0,LT:0},flags);
+    });
+
+    it("should throw an error when ADD has an invalid argument",function(){
+      assert.throws(()=>Line.create(10,"ADD",["10","B"]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"ADD",["F","B"]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"ADD",["B","F"]),InvalidInstructionException);
+    });
+  });
+
   describe("jmp",function(){
     it("should execute a jmp with valid numeric value",function(){
       let line = Line.create(10,"JMP",["20"]);
