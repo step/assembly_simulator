@@ -10,6 +10,7 @@ const Jmp = require('./jmp.js');
 const JmpEq = require('./jmpEq.js');
 const JmpNe = require('./jmpNe.js');
 const JmpLt = require('./jmpLt.js');
+const JmpLe = require('./jmpLe.js');
 
 const isRegister = (arg) => arg.toString().match(/^[ABCD]$/i);
 const isNumericalValue = (arg) => arg.toString().match(/^[0-9]+$/i);
@@ -23,12 +24,12 @@ factories.mov = (args) => {
     throw new InvalidInstructionException();
 
   if(isRegister(args[1]))
-    return new MovRegToReg(args[0],args[1]);
+    return new MovRegToReg(args[0].toUpperCase(),args[1].toUpperCase());
 
   if(!isNumericalValue(args[1]))
     throw new InvalidInstructionException();
 
-  return new MovValToReg(args[0],+args[1]);
+  return new MovValToReg(args[0].toUpperCase(),+args[1]);
 }
 
 factories.cmp = (args) => {
@@ -36,12 +37,12 @@ factories.cmp = (args) => {
     throw new InvalidInstructionException();
 
   if(isRegister(args[1]))
-    return new CmpRegToReg(args[0],args[1]);
+    return new CmpRegToReg(args[0].toUpperCase(),args[1].toUpperCase());
 
   if(!isNumericalValue(args[1]))
     throw new InvalidInstructionException();
 
-  return new CmpRegToVal(args[0],+args[1]);
+  return new CmpRegToVal(args[0].toUpperCase(),+args[1]);
 }
 
 factories.jmp = (args,actualJump=Jmp)=>{
@@ -58,6 +59,10 @@ factories.jlt = (args) => {
   return factories.jmp(args,JmpLt);
 }
 
+factories.jle = (args) => {
+  return factories.jmp(args,JmpLe);
+}
+
 factories.jne = (args) => {
   return factories.jmp(args,JmpNe);
 }
@@ -67,12 +72,12 @@ factories.add = (args) => {
     throw new InvalidInstructionException();
 
   if(isRegister(args[1]))
-    return new AddRegToReg(args[0],args[1]);
+    return new AddRegToReg(args[0].toUpperCase(),args[1].toUpperCase());
 
   if(!isNumericalValue(args[1]))
     throw new InvalidInstructionException();
 
-  return new AddValToReg(args[0],+args[1]);
+  return new AddValToReg(args[0].toUpperCase(),+args[1]);
 }
 
 

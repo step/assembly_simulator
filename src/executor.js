@@ -34,7 +34,7 @@ class Executor {
     let regs = this.getRegs();
     let flags = this.getFlags();
     executableLines.execute({regs,flags},({regs,flags,nextLine,currLine})=>{
-      // console.log(regs,flags,currLine,nextLine);
+      console.log(regs,flags,currLine,nextLine);
       this.setRegs(regs);
       this.setFlags(flags);
     });

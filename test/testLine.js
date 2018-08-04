@@ -170,4 +170,34 @@ describe("Line execute",function(){
       assert.throws(()=>Line.create(10,"JLT",["B"]),InvalidInstructionException);
     });
   });
+
+  describe("jle",function(){
+    it("should execute a jle with valid numeric value",function(){
+      let line = Line.create(10,"JLE",["20"]);
+      let currRegs = {A:0,B:0,C:0,D:0};
+      let currFlags = {EQ:0,NE:1,GT:0,LT:1};
+      let {currLine,regs,flags,nextLine} = line.execute(currRegs,currFlags);
+      assert.equal(10,currLine);
+      assert.equal("20",nextLine);
+      assert.deepEqual({A:0,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:0,NE:1,GT:0,LT:1},flags);
+    });
+
+    it("should execute a jle with valid numeric value when EQ is set",function(){
+      let line = Line.create(10,"JLE",["20"]);
+      let currRegs = {A:0,B:0,C:0,D:0};
+      let currFlags = {EQ:1,NE:0,GT:0,LT:0};
+      let {currLine,regs,flags,nextLine} = line.execute(currRegs,currFlags);
+      assert.equal(10,currLine);
+      assert.equal("20",nextLine);
+      assert.deepEqual({A:0,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:1,NE:0,GT:0,LT:0},flags);
+    });
+
+    it.skip("should throw an error when JLT has an invalid argument",function(){
+      assert.throws(()=>Line.create(10,"JLT",[]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"JLT",["B"]),InvalidInstructionException);
+    });
+  });
+
 });
