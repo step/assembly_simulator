@@ -1,4 +1,4 @@
-class Mov {
+class MovValToReg {
   constructor(lhs,rhs) {
     this.lhs = lhs;
     this.rhs = rhs;
@@ -12,4 +12,4 @@ class Mov {
   }
 }
 
-module.exports = Mov;
+module.exports = MovValToReg;

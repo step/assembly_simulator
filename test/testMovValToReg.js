@@ -1,9 +1,9 @@
 const assert=require("assert");
-const Mov=require("../src/mov.js");
+const MovValToReg=require("../src/movValToReg.js");
 
-describe("Mov execution",function(){
+describe("MovValToReg execution",function(){
   it("should mov literal value to A",function(){
-    let mov = new Mov("A",10);
+    let mov = new MovValToReg("A",10);
     let currFlags = {EQ:0,NE:0,LT:0,GT:0};
     let currRegs = {A:0,B:0,C:0,D:0};
     let {regs,flags} = mov.execute(currRegs,currFlags);
@@ -12,7 +12,7 @@ describe("Mov execution",function(){
   });
 
   it("should mov literal value to B",function(){
-    let mov = new Mov("B",10);
+    let mov = new MovValToReg("B",10);
     let currFlags = {EQ:0,NE:0,LT:0,GT:0};
     let currRegs = {A:0,B:0,C:0,D:0};
     let {regs,flags} = mov.execute(currRegs,currFlags);
@@ -21,7 +21,7 @@ describe("Mov execution",function(){
   });
 
   it("should mov literal value to C",function(){
-    let mov = new Mov("C",10);
+    let mov = new MovValToReg("C",10);
     let currFlags = {EQ:0,NE:0,LT:0,GT:0};
     let currRegs = {A:0,B:0,C:0,D:0};
     let {regs,flags} = mov.execute(currRegs,currFlags);
@@ -30,7 +30,7 @@ describe("Mov execution",function(){
   });
 
   it("should mov literal value to D",function(){
-    let mov = new Mov("D",10);
+    let mov = new MovValToReg("D",10);
     let currFlags = {EQ:0,NE:0,LT:0,GT:0};
     let currRegs = {A:0,B:0,C:0,D:0};
     let {regs,flags} = mov.execute(currRegs,currFlags);
