@@ -12,6 +12,14 @@ class Executor {
     this.resetFlags();
   }
 
+  setRegs({A,B,C,D}) {
+    this.regs = {A,B,C,D};
+  }
+
+  setFlags({EQ,NE,LT,GT}) {
+    this.flags = {EQ,NE,LT,GT};
+  }
+
   getRegs() {
     let {A,B,C,D} = this.regs;
     return {A,B,C,D};
@@ -23,7 +31,13 @@ class Executor {
   }
 
   execute(executableLines) {
-    this.executableLines=executableLines;
+    let regs = this.getRegs();
+    let flags = this.getFlags();
+    executableLines.execute({regs,flags},({regs,flags,nextLine,currLine})=>{
+      // console.log(regs,flags,currLine,nextLine);
+      this.setRegs(regs);
+      this.setFlags(flags);
+    });
   }
 }
 
