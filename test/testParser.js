@@ -30,7 +30,9 @@ describe("should parse all legal forms",function(){
 });
 
 describe("should not parse illegal forms",function(){
-  it("should not parse lines without line numbers",function(){
+  it("should not parse illegal lines",function(){
     assert.throws(()=>parse("ADD A,A"),InvalidInstructionException);
+    assert.throws(()=>parse("10ADD A,A"),InvalidInstructionException);
+    assert.throws(()=>parse("10 ADDA,A"),InvalidInstructionException);
   });
 });

@@ -13,7 +13,17 @@ const parse = (instruction) => {
 }
 
 const parseArgs =  (args)=>{
-  return args.split(',').map(arg=>arg.trim());
+  let trimmed=args.trim();
+  if(trimmed.match(/^\"[^\"]*\"$/))
+    return [trimmed];
+  let matches = trimmed.match(/^([a-zA-Z0-9]+)(\s*,\s*([a-zA-Z0-9]+))?$/);
+  if(!matches)
+    throw new Error();
+  let parsed=[matches[1]];
+  if(matches[3])
+    parsed.push(matches[3]);
+
+  return parsed;
 }
 
 module.exports= parse;
