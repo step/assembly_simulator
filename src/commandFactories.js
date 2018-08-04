@@ -9,6 +9,7 @@ const InvalidInstructionException = require("./invalidInstructionException");
 const Jmp = require('./jmp.js');
 const JmpEq = require('./jmpEq.js');
 const JmpNe = require('./jmpNe.js');
+const JmpLt = require('./jmpLt.js');
 
 const isRegister = (arg) => arg.toString().match(/^[ABCD]$/i);
 const isNumericalValue = (arg) => arg.toString().match(/^[0-9]+$/i);
@@ -51,6 +52,10 @@ factories.jmp = (args,actualJump=Jmp)=>{
 
 factories.je = (args) => {
   return factories.jmp(args,JmpEq);
+}
+
+factories.jlt = (args) => {
+  return factories.jmp(args,JmpLt);
 }
 
 factories.jne = (args) => {
