@@ -1,5 +1,5 @@
 const assert=require("assert");
-const CmpRegToVal=require("../src/cmpRegToVal.js");
+const CmpRegToVal=require("../src/commands/cmpRegToVal.js");
 
 describe("CmpRegToVal execution",function(){
   it("should compare two equal values and set the EQ flag",function(){

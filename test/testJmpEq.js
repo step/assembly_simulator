@@ -1,5 +1,5 @@
 const assert=require("assert");
-const JmpEq=require("../src/jmpEq.js");
+const JmpEq=require("../src/commands/jmpEq.js");
 
 describe("JmpEq execution",function(){
   it("should jump to the given line number when EQ is set",function(){

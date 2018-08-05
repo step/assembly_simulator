@@ -1,6 +1,6 @@
 const Line = require("../src/line.js");
 const assert = require("assert");
-const InvalidInstructionException=require("../src/invalidInstructionException.js");
+const InvalidInstructionException=require("../src/commands/invalidInstructionException.js");
 
 describe("Line execute",function(){
   describe("start",function(){

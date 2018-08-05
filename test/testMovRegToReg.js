@@ -1,5 +1,5 @@
 const assert=require("assert");
-const MovRegToReg=require("../src/movRegToReg.js");
+const MovRegToReg=require("../src/commands/movRegToReg.js");
 
 describe("MovRegToReg execution",function(){
   it("should copy value from reg B to reg A",function(){

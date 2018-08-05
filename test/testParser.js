@@ -1,4 +1,4 @@
-const InvalidInstructionException = require('../src/invalidInstructionException');
+const InvalidInstructionException = require('../src/commands/invalidInstructionException');
 const assert = require("assert");
 const parse = require("../src/parse.js");
 

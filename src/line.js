@@ -1,4 +1,4 @@
-const factories = require("./commandFactories.js");
+const factories = require("./commands/commandFactories.js");
 
 const lib = {};
 

@@ -1,5 +1,5 @@
 const assert=require("assert");
-const Jmp=require("../src/jmp.js");
+const Jmp=require("../src/commands/jmp.js");
 
 describe("Jmp execution",function(){
   it("should jump to the given line number",function(){

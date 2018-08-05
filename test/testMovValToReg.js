@@ -1,5 +1,5 @@
 const assert=require("assert");
-const MovValToReg=require("../src/movValToReg.js");
+const MovValToReg=require("../src/commands/movValToReg.js");
 
 describe("MovValToReg execution",function(){
   it("should mov literal value to A",function(){

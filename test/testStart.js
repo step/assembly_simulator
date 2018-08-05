@@ -1,5 +1,5 @@
 const assert=require("assert");
-const Start=require("../src/start.js");
+const Start=require("../src/commands/start.js");
 
 describe("Start execution",function(){
   it("should reset all flags and registers",function(){

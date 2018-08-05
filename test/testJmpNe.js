@@ -1,5 +1,5 @@
 const assert=require("assert");
-const JmpNe=require("../src/jmpNe.js");
+const JmpNe=require("../src/commands/jmpNe.js");
 
 describe("JmpNe execution",function(){
   it("should jump to the given line number when NE is set",function(){

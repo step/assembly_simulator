@@ -1,5 +1,5 @@
 const assert=require("assert");
-const JmpLt=require("../src/jmpLt.js");
+const JmpLt=require("../src/commands/jmpLt.js");
 
 describe("JmpLt execution",function(){
   it("should jump to the given line number when LT is set",function(){

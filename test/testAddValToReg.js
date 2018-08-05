@@ -1,5 +1,5 @@
 const assert=require("assert");
-const AddValToReg=require("../src/addValToReg.js");
+const AddValToReg=require("../src/commands/addValToReg.js");
 
 describe("AddValToReg execution",function(){
   it("should add a literal value to the A register",function(){

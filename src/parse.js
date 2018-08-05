@@ -1,4 +1,4 @@
-const InvalidInstructionException = require('./invalidInstructionException');
+const InvalidInstructionException = require('./commands/invalidInstructionException');
 const parse = (instruction) => {
   let components = /^\s*([0-9]+)\s+([a-zA-Z]+)\s*(.*)*$/;
   let matches = instruction.match(components);
