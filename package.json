@@ -1,5 +1,5 @@
 {
-  "name": "fake_assembly",
+  "name": "assembly_simulator",
   "version": "1.0.0",
   "description": "",
   "main": "executor.js",
@@ -8,7 +8,8 @@
     "mocha": "^5.2.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "prettify": "prettier --single-quote --write \"{src,test}/**/*.js\""
   },
   "author": "",
   "license": "ISC"
