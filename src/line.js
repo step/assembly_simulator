@@ -21,7 +21,7 @@ class Line {
 
 lib.create = (lineNumber, command, args) => {
   let key = command.toLowerCase();
-  if(!Object.keys(factories).includes(key)) {
+  if (!Object.keys(factories).includes(key)) {
     throw new InvalidInstructionException();
   }
   let cmd = factories[key](args);

@@ -1,6 +1,6 @@
-const parse=require("./parse.js");
-const Line = require("./line.js");
-const Lines = require("./lines.js");
+const parse = require('./parse.js');
+const Line = require('./line.js');
+const Lines = require('./lines.js');
 
 class Machine {
   constructor() {
@@ -20,12 +20,12 @@ class Machine {
 
   load(program) {
     this.lines = new Lines();
-    let instructions=program.trim().split(/\n/);
-    instructions.forEach(instruction=>{
-      let {lineNumber,command,args}=parse(instruction);
-      let line=Line.create(lineNumber,command,args);
+    let instructions = program.trim().split(/\n/);
+    instructions.forEach(instruction => {
+      let { lineNumber, command, args } = parse(instruction);
+      let line = Line.create(lineNumber, command, args);
       this.lines.add(line);
-    })
+    });
   }
 
   getRegs() {
