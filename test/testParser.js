@@ -27,6 +27,12 @@ describe("should parse all legal forms",function(){
     assert.equal(command,"ADD");
     assert.deepEqual(args,['A','A']);
   });
+  it("should parse string literals '10 PRN \"HELLO\"'",function(){
+    let {lineNumber,command,args} = parse(`10 PRN "HELLO"`);
+    assert.equal(lineNumber,"10");
+    assert.equal(command,"PRN");
+    assert.deepEqual(args,[`"HELLO"`]);
+  });
 });
 
 describe("should not parse illegal forms",function(){
