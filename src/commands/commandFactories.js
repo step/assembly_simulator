@@ -15,11 +15,12 @@ const JmpLt = require('./jmpLt.js');
 const JmpLe = require('./jmpLe.js');
 const JmpGt = require('./jmpGt.js');
 const JmpGe = require('./jmpGe.js');
-
+const PrnLiteral = require("./prnLiteral.js");
 
 const isRegister = (arg) => arg.toString().match(/^[ABCD]$/i);
 const isNumericalValue = (arg) => arg.toString().match(/^[0-9]+$/i);
-
+const isStringLiteral = (arg) => arg.toString().match(/^".*"$/);
+const stripOuterQuotes = (arg) => arg.replace(/^"/,"").replace(/"$/,"");
 const factories = {};
 
 factories.start = (args) => new Start();
@@ -96,5 +97,15 @@ factories.add = (args) => {
   return new AddValToReg(args[0].toUpperCase(),+args[1]);
 }
 
+factories.prn = (args) => {
+  if(args.length != 1)
+    throw new InvalidInstructionException();
+
+  if(isStringLiteral(args[0])) {
+    return new PrnLiteral(stripOuterQuotes(args[0]));
+  }
+
+  throw new InvalidInstructionException();
+}
 
 module.exports = factories;

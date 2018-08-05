@@ -281,4 +281,23 @@ describe("Line execute",function(){
       assert.throws(()=>Line.create(10,"JGE",["B"]),InvalidInstructionException);
     });
   });
+
+  describe("prn",function(){
+    it("should print literal strings",function(){
+      let line = Line.create(10,"PRN",[`"hello"`])
+      let currRegs = {A:0,B:0,C:0,D:0};
+      let currFlags = {EQ:0,NE:0,GT:0,LT:0};
+      let {currLine,regs,flags,nextLine,prn} = line.execute(currRegs,currFlags);
+      assert.equal("hello",prn);
+      assert.equal(10,currLine);
+      assert.equal(undefined,nextLine);
+      assert.deepEqual({A:0,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:0,NE:0,GT:0,LT:0},flags);
+    });
+
+    it("should throw an error when prn has an invalid argument",function(){
+      assert.throws(()=>Line.create(10,"PRN",[]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"PRN",[`"hello`]),InvalidInstructionException);
+    });
+  });
 });
