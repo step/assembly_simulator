@@ -15,3 +15,4 @@ instructions.forEach(instruction=>{
 
 let executor = new Executor();
 executor.execute(lines);
+console.log(executor.getPrn().join("\n"));
