@@ -17,7 +17,7 @@ class Lines {
     let shouldHalt=false;
     while(currentIndex<this.lines.length && !shouldHalt) {
       let line = this.lines[currentIndex];
-      let {regs,flags,nextLine,currLine,halt} = line.execute(currRegs,currFlags);
+      let {regs,flags,nextLine,currLine,halt,prn} = line.execute(currRegs,currFlags);
       currRegs=regs;
       currFlags=flags;
       currentIndex++;
@@ -28,7 +28,7 @@ class Lines {
         let lineToExecute = this.lines[currentIndex];
         nextLine = lineToExecute?lineToExecute.getLineNumber():"STOP";
       }
-      cb({regs,flags,nextLine,currLine});
+      cb({regs,flags,nextLine,currLine,prn});
     }
   }
 }

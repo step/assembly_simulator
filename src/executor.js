@@ -10,6 +10,7 @@ class Executor {
   constructor() {
     this.resetRegisters();
     this.resetFlags();
+    this.prn=[];
   }
 
   setRegs({A,B,C,D}) {
@@ -30,13 +31,19 @@ class Executor {
     return {EQ,NE,GT,LT};
   }
 
+  getPrn() {
+    return this.prn;
+  }
+
   execute(executableLines) {
     let regs = this.getRegs();
     let flags = this.getFlags();
-    executableLines.execute({regs,flags},({regs,flags,nextLine,currLine})=>{
+    executableLines.execute({regs,flags},({regs,flags,nextLine,currLine,prn})=>{
       // console.log(regs,flags,currLine,nextLine);
       this.setRegs(regs);
       this.setFlags(flags);
+      if(prn)
+        this.prn.push(prn);
     });
   }
 }

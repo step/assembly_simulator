@@ -57,3 +57,29 @@ describe("executing multiple lines",function(){
     assert.deepEqual({NE:0,EQ:0,LT:0,GT:0},executor.getFlags());
   });
 });
+
+describe("printing",function(){
+  it("should list printed output",function(){
+    const executor = new Executor();
+    const program = new Lines();
+    program.add(Line.create("10","prn",[`"hello"`]));
+    executor.execute(program);
+    assert.deepEqual(["hello"],executor.getPrn());
+  });
+  it("should list only the printed output",function(){
+    const executor = new Executor();
+    const program = new Lines();
+    program.add(Line.create("10","prn",[`"hello"`]));
+    program.add(Line.create("10","mov",["A","10"]));
+    executor.execute(program);
+    assert.deepEqual(["hello"],executor.getPrn());
+  });
+  it("should list all the printed output",function(){
+    const executor = new Executor();
+    const program = new Lines();
+    program.add(Line.create("10","prn",[`"hello"`]));
+    program.add(Line.create("10","prn",[`"goodbye"`]));
+    executor.execute(program);
+    assert.deepEqual(["hello","goodbye"],executor.getPrn());
+  });
+});
