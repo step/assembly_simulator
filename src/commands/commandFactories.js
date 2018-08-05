@@ -107,7 +107,7 @@ factories.prn = (args) => {
   }
 
   if(isRegister(args[0]))
-    return new PrnReg(args[0]);
+    return new PrnReg(args[0].toUpperCase());
 
   throw new InvalidInstructionException();
 }
