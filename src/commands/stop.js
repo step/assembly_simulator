@@ -1,6 +1,6 @@
 class Stop {
-  execute(currRegs,currFlags) {
-    return {regs:currRegs,flags:currFlags,halt:true};
+  execute(currRegs, currFlags) {
+    return { regs: currRegs, flags: currFlags, halt: true };
   }
 }
 

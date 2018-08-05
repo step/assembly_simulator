@@ -1,7 +1,7 @@
 class Lines {
   constructor() {
     this.lines = [];
-    this.lineNumbers={};
+    this.lineNumbers = {};
   }
 
   add(line) {
@@ -10,25 +10,27 @@ class Lines {
     this.lineNumbers[line.getLineNumber()] = index;
   }
 
-  execute(initState,cb) {
+  execute(initState, cb) {
     let currRegs = initState.regs;
     let currFlags = initState.flags;
-    let currentIndex=0;
-    let shouldHalt=false;
-    while(currentIndex<this.lines.length && !shouldHalt) {
+    let currentIndex = 0;
+    let shouldHalt = false;
+    while (currentIndex < this.lines.length && !shouldHalt) {
       let line = this.lines[currentIndex];
-      let {regs,flags,nextLine,currLine,halt,prn} = line.execute(currRegs,currFlags);
-      currRegs=regs;
-      currFlags=flags;
+      let { regs, flags, nextLine, currLine, halt, prn } = line.execute(
+        currRegs,
+        currFlags
+      );
+      currRegs = regs;
+      currFlags = flags;
       currentIndex++;
-      shouldHalt=halt;
-      if(nextLine)
-        currentIndex = this.lineNumbers[nextLine];
+      shouldHalt = halt;
+      if (nextLine) currentIndex = this.lineNumbers[nextLine];
       else {
         let lineToExecute = this.lines[currentIndex];
-        nextLine = lineToExecute?lineToExecute.getLineNumber():"STOP";
+        nextLine = lineToExecute ? lineToExecute.getLineNumber() : 'STOP';
       }
-      cb({regs,flags,nextLine,currLine,prn});
+      cb({ regs, flags, nextLine, currLine, prn });
     }
   }
 }

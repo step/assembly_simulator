@@ -1,6 +1,6 @@
 class InvalidInstructionException extends Error {
   constructor() {
-    super()
+    super();
   }
 }
 
