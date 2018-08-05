@@ -295,9 +295,24 @@ describe("Line execute",function(){
       assert.deepEqual({EQ:0,NE:0,GT:0,LT:0},flags);
     });
 
+    it("should print register A",function(){
+      let line = Line.create(10,"PRN",["A"])
+      let currRegs = {A:1,B:0,C:0,D:0};
+      let currFlags = {EQ:0,NE:0,GT:0,LT:0};
+      let {currLine,regs,flags,nextLine,prn} = line.execute(currRegs,currFlags);
+      assert.equal("1",prn);
+      assert.equal(10,currLine);
+      assert.equal(undefined,nextLine);
+      assert.deepEqual({A:1,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:0,NE:0,GT:0,LT:0},flags);
+    });
+
     it("should throw an error when prn has an invalid argument",function(){
       assert.throws(()=>Line.create(10,"PRN",[]),InvalidInstructionException);
       assert.throws(()=>Line.create(10,"PRN",[`"hello`]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"PRN",[`hello"`]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"PRN",[`hello`]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"PRN",["E"]),InvalidInstructionException);
     });
   });
 });

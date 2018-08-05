@@ -16,6 +16,7 @@ const JmpLe = require('./jmpLe.js');
 const JmpGt = require('./jmpGt.js');
 const JmpGe = require('./jmpGe.js');
 const PrnLiteral = require("./prnLiteral.js");
+const PrnReg = require("./prnReg.js");
 
 const isRegister = (arg) => arg.toString().match(/^[ABCD]$/i);
 const isNumericalValue = (arg) => arg.toString().match(/^[0-9]+$/i);
@@ -104,6 +105,9 @@ factories.prn = (args) => {
   if(isStringLiteral(args[0])) {
     return new PrnLiteral(stripOuterQuotes(args[0]));
   }
+
+  if(isRegister(args[0]))
+    return new PrnReg(args[0]);
 
   throw new InvalidInstructionException();
 }
