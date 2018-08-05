@@ -211,7 +211,7 @@ describe("Line execute",function(){
     });
   });
 
-  describe("jGt",function(){
+  describe("jgt",function(){
     it("should execute a jgt with valid numeric value",function(){
       let line = Line.create(10,"JGT",["20"]);
       let currRegs = {A:0,B:0,C:0,D:0};
@@ -223,7 +223,7 @@ describe("Line execute",function(){
       assert.deepEqual({EQ:0,NE:1,GT:1,LT:0},flags);
     });
 
-    it("should throw an error when JLT has an invalid argument",function(){
+    it("should throw an error when JGT has an invalid argument",function(){
       assert.throws(()=>Line.create(10,"JGT",[]),InvalidInstructionException);
       assert.throws(()=>Line.create(10,"JGT",["B"]),InvalidInstructionException);
     });
