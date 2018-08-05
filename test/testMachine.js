@@ -36,4 +36,19 @@ describe('Machine execution', function() {
     assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, machine.getRegs());
     assert.deepEqual({ NE: 0, EQ: 0, LT: 0, GT: 0 }, machine.getFlags());
   });
+  it('should execute a program with prn instructions', function() {
+    const machine = new Machine();
+    const program = [
+      '10 START',
+      '20 PRN "HELLO"',
+      '30 MOV A,10',
+      '40 PRN A',
+      '50 STOP'
+    ];
+    machine.load(stitch(program));
+    machine.execute();
+    assert.deepEqual(['HELLO', '10'], machine.getPrn());
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, machine.getRegs());
+    assert.deepEqual({ NE: 0, EQ: 0, LT: 0, GT: 0 }, machine.getFlags());
+  });
 });

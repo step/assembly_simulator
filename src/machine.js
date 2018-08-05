@@ -4,7 +4,7 @@ const Lines = require('./lines.js');
 
 class Machine {
   constructor() {
-    this.lines;
+    this.lines = new Lines();
     this._resetRegisters();
     this._resetFlags();
     this.prn = [];
