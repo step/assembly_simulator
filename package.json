@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "executor.js",
-  "dependencies": {
-    "cli-table": "^0.3.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "mocha": "^5.2.0"
   },
