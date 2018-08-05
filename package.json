@@ -2,7 +2,7 @@
   "name": "assembly_simulator",
   "version": "1.0.0",
   "description": "",
-  "main": "executor.js",
+  "main": "index.js",
   "dependencies": {},
   "devDependencies": {
     "mocha": "^5.2.0"
