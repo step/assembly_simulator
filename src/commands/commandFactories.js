@@ -12,6 +12,7 @@ const JmpNe = require('./jmpNe.js');
 const JmpLt = require('./jmpLt.js');
 const JmpLe = require('./jmpLe.js');
 const JmpGt = require('./jmpGt.js');
+const JmpGe = require('./jmpGe.js');
 
 const isRegister = (arg) => arg.toString().match(/^[ABCD]$/i);
 const isNumericalValue = (arg) => arg.toString().match(/^[0-9]+$/i);
@@ -70,6 +71,10 @@ factories.jne = (args) => {
 
 factories.jgt = (args) => {
   return factories.jmp(args,JmpGt);
+}
+
+factories.jge = (args) => {
+  return factories.jmp(args,JmpGe);
 }
 
 

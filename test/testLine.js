@@ -228,4 +228,44 @@ describe("Line execute",function(){
       assert.throws(()=>Line.create(10,"JGT",["B"]),InvalidInstructionException);
     });
   });
+
+  describe("jge",function(){
+    it("should execute a jge with valid numeric value when GT is set",function(){
+      let line = Line.create(10,"JGE",["70"]);
+      let currRegs = {A:0,B:0,C:0,D:0};
+      let currFlags = {EQ:0,NE:1,GT:1,LT:0};
+      let {currLine,regs,flags,nextLine} = line.execute(currRegs,currFlags);
+      assert.equal(10,currLine);
+      assert.equal("70",nextLine);
+      assert.deepEqual({A:0,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:0,NE:1,GT:1,LT:0},flags);
+    });
+
+    it("should execute a jge with valid numeric value when EQ is set",function(){
+      let line = Line.create(10,"JGE",["70"]);
+      let currRegs = {A:0,B:0,C:0,D:0};
+      let currFlags = {EQ:1,NE:0,GT:0,LT:0};
+      let {currLine,regs,flags,nextLine} = line.execute(currRegs,currFlags);
+      assert.equal(10,currLine);
+      assert.equal("70",nextLine);
+      assert.deepEqual({A:0,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:1,NE:0,GT:0,LT:0},flags);
+    });
+
+    it("should not execute a jge when neither EQ nor GT are set",function(){
+      let line = Line.create(10,"JGE",["70"]);
+      let currRegs = {A:0,B:0,C:0,D:0};
+      let currFlags = {EQ:0,NE:1,GT:0,LT:1};
+      let {currLine,regs,flags,nextLine} = line.execute(currRegs,currFlags);
+      assert.equal(10,currLine);
+      assert.equal(undefined,nextLine);
+      assert.deepEqual({A:0,B:0,C:0,D:0},regs);
+      assert.deepEqual({EQ:0,NE:1,GT:0,LT:1},flags);
+    });
+
+    it("should throw an error when JGE has an invalid argument",function(){
+      assert.throws(()=>Line.create(10,"JGE",[]),InvalidInstructionException);
+      assert.throws(()=>Line.create(10,"JGE",["B"]),InvalidInstructionException);
+    });
+  });
 });
