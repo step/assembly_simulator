@@ -4,10 +4,15 @@ const Lines = require('./lines.js');
 
 class Machine {
   constructor() {
+    this._reset();
     this.lines = new Lines();
+  }
+
+  _reset() {
     this._resetRegisters();
     this._resetFlags();
     this.prn = [];
+    this.table = [];
   }
 
   _resetRegisters() {
@@ -50,7 +55,31 @@ class Machine {
     return this.prn;
   }
 
+  _addToTable({ regs, flags, nextLine, currLine, prn }) {
+    let { A, B, C, D } = regs;
+    let { EQ, NE, GT, LT } = flags;
+    let row = {
+      A,
+      B,
+      C,
+      D,
+      EQ,
+      NE,
+      GT,
+      LT,
+      CL: currLine,
+      NL: nextLine,
+      PRN: prn
+    };
+    this.table.push(row);
+  }
+
+  getTable() {
+    return this.table;
+  }
+
   execute() {
+    this._reset();
     let regs = this.getRegs();
     let flags = this.getFlags();
     this.lines.execute(
@@ -59,6 +88,7 @@ class Machine {
         this._setRegs(regs);
         this._setFlags(flags);
         if (prn) this.prn.push(prn);
+        this._addToTable({ regs, flags, nextLine, currLine, prn });
       }
     );
   }
