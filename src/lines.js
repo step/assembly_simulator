@@ -14,12 +14,14 @@ class Lines {
     let currRegs = initState.regs;
     let currFlags = initState.flags;
     let currentIndex=0;
-    while(currentIndex<this.lines.length) {
+    let shouldHalt=false;
+    while(currentIndex<this.lines.length && !shouldHalt) {
       let line = this.lines[currentIndex];
-      let {regs,flags,nextLine,currLine} = line.execute(currRegs,currFlags);
+      let {regs,flags,nextLine,currLine,halt} = line.execute(currRegs,currFlags);
       currRegs=regs;
       currFlags=flags;
       currentIndex++;
+      shouldHalt=halt;
       if(nextLine)
         currentIndex = this.lineNumbers[nextLine];
       else {

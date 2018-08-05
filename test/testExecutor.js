@@ -44,4 +44,16 @@ describe("executing multiple lines",function(){
     assert.deepEqual({A:2,B:100,C:0,D:0},executor.getRegs());
     assert.deepEqual({NE:0,EQ:1,LT:0,GT:0},executor.getFlags());
   });
+
+  it("should stop execution on the STOP instruction",function(){
+    const executor = new Executor();
+    const program = new Lines();
+    program.add(Line.create("10","start"));
+    program.add(Line.create("20","mov",["A",10]));
+    program.add(Line.create("30","stop"));
+    program.add(Line.create("40","mov",["A",20]));
+    executor.execute(program);
+    assert.deepEqual({A:10,B:0,C:0,D:0},executor.getRegs())
+    assert.deepEqual({NE:0,EQ:0,LT:0,GT:0},executor.getFlags());
+  });
 });

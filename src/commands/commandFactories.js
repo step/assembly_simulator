@@ -1,11 +1,13 @@
+const InvalidInstructionException = require("./invalidInstructionException");
+
 const Start = require("./start.js");
+const Stop = require("./stop.js");
 const MovValToReg = require("./movValToReg");
 const MovRegToReg = require("./movRegToReg");
 const AddValToReg = require("./addValToReg");
 const AddRegToReg = require("./addRegToReg");
 const CmpRegToVal = require("./cmpRegToVal");
 const CmpRegToReg = require("./cmpRegToReg");
-const InvalidInstructionException = require("./invalidInstructionException");
 const Jmp = require('./jmp.js');
 const JmpEq = require('./jmpEq.js');
 const JmpNe = require('./jmpNe.js');
@@ -14,12 +16,15 @@ const JmpLe = require('./jmpLe.js');
 const JmpGt = require('./jmpGt.js');
 const JmpGe = require('./jmpGe.js');
 
+
 const isRegister = (arg) => arg.toString().match(/^[ABCD]$/i);
 const isNumericalValue = (arg) => arg.toString().match(/^[0-9]+$/i);
 
 const factories = {};
 
 factories.start = (args) => new Start();
+
+factories.stop = (args) => new Stop();
 
 factories.mov = (args) => {
   if(!isRegister(args[0]))
