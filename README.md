@@ -96,10 +96,128 @@ The "Machine" only recognises positive integers for now.
    20 CMP 2,A
    ```
 5. **JMP**
+
+   The `JMP` instruction unconditionally continues execution from the line specified. `JMP` and all other jump instructions leave the registers and flags unmodified. `JMP` takes one argument and that argument has to be a line number.
+
+   Valid uses
+   ```
+   70 JMP 80
+   70 JMP 60
+   ```
+
+   Invalid uses
+   ```
+   10 JMP A
+   20 JMP "10"
+   ```
+
 6. **JE**
+
+   `JE` is a conditional jump instruction that only jumps to a specified line if the `EQ` flag is set. If `EQ` is not set, then the execution continues normally.
+
+   Valid uses
+   ```
+   10 JE 50
+   20 JE 10
+   ```
+
+   Invalid uses
+   ```
+   10 JE A
+   20 JE "10"
+   ```
+
 7. **JNE**
+
+   `JNE` is a conditional jump instruction that only jumps to a specified line if the `NE` flag is set. If `NE` is not set, then the execution continues normally.
+
+   Valid uses
+   ```
+   10 JNE 50
+   20 JNE 10
+   ```
+
+   Invalid uses
+   ```
+   10 JNE A
+   20 JNE "10"
+   ```
+
 8. **JGT**
+
+   `JGT` is a conditional jump instruction that only jumps to a specified line if the `GT` flag is set. If `GT` is not set, then the execution continues normally.
+
+   Valid uses
+   ```
+   10 JGT 50
+   20 JGT 10
+   ```
+
+   Invalid uses
+   ```
+   10 JGT A
+   20 JGT "10"
+   ```
+
 9. **JGE**
+
+   `JGE` is a conditional jump instruction that only jumps to a specified line if the `GT` or `EQ` flags are set. If `GT` or `EQ` are not set, then the execution continues normally.
+
+   Valid uses
+   ```
+   10 JGE 50
+   20 JGE 10
+   ```
+
+   Invalid uses
+   ```
+   10 JGE A
+   20 JGE "10"
+   ```
+
 10. **JLT**
+
+   `JLT` is a conditional jump instruction that only jumps to a specified line if the `LT` flag is set. If `LT` is not set, then the execution continues normally.
+
+   Valid uses
+   ```
+   10 JLT 50
+   20 JLT 10
+   ```
+
+   Invalid uses
+   ```
+   10 JLT A
+   20 JLT "10"
+   ```
+
 11. **JLE**
+
+   `JLE` is a conditional jump instruction that only jumps to a specified line if the `LT` or `EQ` flags are set. If `LT` or `EQ` are not set, then the execution continues normally.
+
+   Valid uses
+   ```
+   10 JLE 50
+   20 JLE 10
+   ```
+
+   Invalid uses
+   ```
+   10 JLE A
+   20 JLE "10"
+   ```
+
 12. **STOP**
+
+   The `STOP` instruction halts execution entirely. It does not take an argument.
+
+   Valid uses
+   ```
+   100 STOP
+   ```
+
+   Invalid uses
+   ```
+   100 STOP 10
+   100 STOP A
+   ```
