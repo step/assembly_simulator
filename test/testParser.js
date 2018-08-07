@@ -33,6 +33,10 @@ describe('should parse all legal forms', function() {
     assert.equal(command, 'PRN');
     assert.deepEqual(args, [`"HELLO"`]);
   });
+  it("should parse empty lines \'\'",function(){
+    let {nonExecutableLine} = parse(``);
+    assert.equal(true,nonExecutableLine);
+  });
 });
 
 describe('should not parse illegal forms', function() {

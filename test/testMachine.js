@@ -16,12 +16,27 @@ describe('Machine loading', function() {
     const program = ['10 STAR'];
     assert.throws(() => machine.load(stitch(program)));
   });
+
+  it("should ignore empty lines",function(){
+    const machine = new Machine();
+    const program = ['',' ', '\t'];
+    assert.doesNotThrow(() => machine.load(stitch(program)));
+  });
 });
 
 describe('Machine execution', function() {
   it('should execute a basic program', function() {
     const machine = new Machine();
     const program = ['10 START', '20 MOV A,10', '30 STOP'];
+    machine.load(stitch(program));
+    machine.execute();
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, machine.getRegs());
+    assert.deepEqual({ NE: 0, EQ: 0, LT: 0, GT: 0 }, machine.getFlags());
+  });
+
+  it('should execute a program with empty lines', function() {
+    const machine = new Machine();
+    const program = ['10 START', ' ', '20 MOV A,10', '30 STOP'];
     machine.load(stitch(program));
     machine.execute();
     assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, machine.getRegs());
