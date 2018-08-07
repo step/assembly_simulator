@@ -40,6 +40,22 @@ There are 4 flags that are set on the compare instruction.
 The "Machine" only recognises positive integers for now.
 
 ### Instruction Set
+
+0. **Comments**
+
+   Comments can be entered by starting a line with `;`. The first non-space character has to be a `;` for it to be considered a comment.
+
+   Valid uses
+   ```
+   ; This is a comment
+      ; this is also a comment
+   ```
+
+   Invalid uses
+   ```
+   10 START ; comments cannot be placed after an instruction
+   this is also not a comment
+   ```
 1. **START**
 
    Starts execution and resets flags. Used at the start of a program, often as `10 START`.
