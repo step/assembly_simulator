@@ -1,3 +1,5 @@
+![CircleCI](https://img.shields.io/circleci/project/github/step/assembly_simulator.svg)
+
 # Assembly Simulator
 
 This project is a small simulator that combines BASIC like line numbers and assembly like instructions to help teach the basics of computing.
