@@ -1,6 +1,6 @@
 const assert = require('assert');
 const Machine = require('../src/machine.js');
-const InvalidInstructionException = require('../src/commands/InvalidInstructionException.js');
+const InvalidInstructionException = require('../src/commands/invalidInstructionException.js');
 
 const stitch = lines => lines.join('\n');
 
