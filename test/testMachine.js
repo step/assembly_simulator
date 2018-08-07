@@ -43,6 +43,15 @@ describe('Machine execution', function() {
     assert.deepEqual({ NE: 0, EQ: 0, LT: 0, GT: 0 }, machine.getFlags());
   });
 
+  it('should execute a program with comments', function() {
+    const machine = new Machine();
+    const program = ['; this is a comment', '10 START', ' ', '20 MOV A,10', '30 STOP'];
+    machine.load(stitch(program));
+    machine.execute();
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, machine.getRegs());
+    assert.deepEqual({ NE: 0, EQ: 0, LT: 0, GT: 0 }, machine.getFlags());
+  });
+
   it('should execute a program with jmp instructions', function() {
     const machine = new Machine();
     const program = ['10 START', '20 JMP 40', '30 MOV A,10', '40 STOP'];
