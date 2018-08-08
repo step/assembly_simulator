@@ -9,6 +9,7 @@ This project is a small simulator that combines BASIC like line numbers and asse
 2. [Usage](#usage)
 3. [Architecture](#architecture)
 4. [Instruction Set](#instruction-set)
+5. [Documentation](#documentation)
 
 ### Installation
 
@@ -25,6 +26,7 @@ machine.execute();
 console.log(machine.getPrn().join("\n"));
 ```
 
+For detailed instructions, see [documentation](#documentation)
 
 ### Architecture
 
@@ -238,4 +240,72 @@ The "Machine" only recognises positive integers for now.
    ```
    100 STOP 10
    100 STOP A
+   ```
+
+### Documentation
+
+   The simulator can be accessed and controlled using the `Machine` object. The machine object is instantiated as
+
+   ```javascript
+   const machine = new Machine();
+   ```
+
+   To load a program into the machine, use the `load` method.
+
+   ```javascript
+   let program = fs.readFileSync("add.asm","utf8");
+   machine.load(program);
+   ```
+
+   To execute a program in the machine, use the `execute` method.
+   ```javascript
+   let program = fs.readFileSync("add.asm","utf8");
+   machine.load(program);
+   machine.execute();
+   ```
+
+   Once the machine has finished execution, you can get all the output that has been generated using the `PRN`  instruction by using the method `getPrn`.
+
+   ```javascript
+   // code to load and execute here
+   let lines = machine.getPrn();
+   console.log(lines.join("\n"));
+   ```
+
+   `getPrn` returns an array of lines. This is preferred instead of giving a string as one may wish to use this library either on the command line or on the frontend where having separate lines available makes it easy to format/render
+
+
+   You can also get the trace table of the execution by using the `getTable` method
+   ```javascript
+   // code to load and execute here
+   let table = machine.getTable();
+   table.forEach(({CL,NL,A,B,C,D,EQ,NE,GT,LT,SL,INST,PRN})=>{
+     console.log([CL,NL,SL,INST,A,B,C,D,EQ,NE,GT,LT,PRN],join(", "));
+   })
+   ```
+
+   This table is very useful to help debug and trace execution. Each row of the table consists of:
+
+   1. The registers `A`, `B`, `C` and `D`
+   2. The flags `EQ`,`NE`,`GT` and `LT`
+   3. Print output from the `PRN` instruction.
+   4. The line number from the source file or program that was executed in `SL`
+   5. The actual instruction being executed in `INST`
+
+### Error Handling
+
+   All errors currently are encapsulated by the `InvalidInstructionException` class. All exceptions have two pieces of information currently.
+
+   1. Source line number where the exception occurred in `lineNumber`
+   2. The offending instruction in `instruction`
+
+   Always surround your machine's `load` and `execute` in try catch blocks.
+
+   ```javascript
+   try {
+     machine.load(program);
+     machine.execute();
+   } catch(e) {
+     console.log("Error on ", e.lineNumber, e.instruction);
+   }
    ```
