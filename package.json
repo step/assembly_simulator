@@ -1,7 +1,7 @@
 {
-  "name": "assembly_simulator",
+  "name": "@craftybones/assembly_simulator",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple assembly simulator for a hybrid language that combines BASIC style line numbers with assembly instructions",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
@@ -12,5 +12,5 @@
     "prettify": "prettier --single-quote --write \"{src,test}/**/*.js\""
   },
   "author": "",
-  "license": "ISC"
+  "license": "Apache 2.0"
 }
