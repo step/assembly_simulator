@@ -26,12 +26,19 @@ class Machine {
   load(program) {
     this.lines = new Lines();
     let instructions = program.trim().split(/\n/);
-    instructions.forEach(instruction => {
+    instructions.forEach((instruction,index) => {
       let { lineNumber, command, args, nonExecutableLine } = parse(instruction);
-      if(!nonExecutableLine) {
-        let line = Line.create(lineNumber, command, args);
-        this.lines.add(line);
+      if(nonExecutableLine)
+        return;
+      let line;
+      try {
+        line = Line.create(lineNumber, command, args);
+      } catch (e) {
+        e.setLineNumber(index+1);
+        e.setInstruction(instruction);
+        throw(e);
       }
+      this.lines.add(line);
     });
   }
 

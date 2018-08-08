@@ -258,3 +258,44 @@ describe('Machine state table', function() {
     assert.deepEqual(expectedTable, machine.getTable());
   });
 });
+
+describe("Error reporting while loading",function(){
+  it("should report the line number at which the error occurred",function(){
+    const machine = new Machine();
+    const program = ['10 STAR'];
+
+    try {
+      machine.load(stitch(program));
+    } catch (e) {
+      assert.equal('InvalidInstructionException',e.name);
+      assert.equal(1,e.lineNumber);
+      assert.equal('10 STAR',e.instruction);
+    }
+  });
+
+  it("should report the line number when the error is on the last line",function(){
+    const machine = new Machine();
+    const program = ['10 START', '20 STO'];
+
+    try {
+      machine.load(stitch(program));
+    } catch (e) {
+      assert.equal('InvalidInstructionException',e.name);
+      assert.equal(2,e.lineNumber);
+      assert.equal('20 STO',e.instruction);
+    }
+  });
+
+  it("should report the line number when the error is on a middle line",function(){
+    const machine = new Machine();
+    const program = ['10 START', '20 MO A,B', '30 STOP'];
+
+    try {
+      machine.load(stitch(program));
+    } catch (e) {
+      assert.equal('InvalidInstructionException',e.name);
+      assert.equal(2,e.lineNumber);
+      assert.equal('20 MO A,B',e.instruction);
+    }
+  });
+});

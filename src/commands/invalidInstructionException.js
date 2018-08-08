@@ -1,7 +1,17 @@
 class InvalidInstructionException extends Error {
   constructor() {
     super();
-    this.name = 'InvalidInstructionException';
+    this.name = this.constructor.name;
+    this.lineNumber = 0;
+    this.instruction = "";
+  }
+
+  setLineNumber(lineNumber) {
+    this.lineNumber = lineNumber;
+  }
+
+  setInstruction(instruction) {
+    this.instruction = instruction;
   }
 }
 
