@@ -10,7 +10,7 @@ This project is a small simulator that combines BASIC like line numbers and asse
 3. [Architecture](#architecture)
 4. [Instruction Set](#instruction-set)
 5. [Documentation](#documentation)
-
+6. [Error Handling](#error-handling)
 ### Installation
 
 `npm install https://github.com/step/assembly_simulator.git`
