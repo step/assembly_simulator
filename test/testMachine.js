@@ -93,7 +93,9 @@ describe('Machine state table', function() {
         NE: 0,
         GT: 0,
         LT: 0,
-        PRN: undefined
+        PRN: undefined,
+        SL: 1,
+        INST: '10 START'
       },
       {
         A: 10,
@@ -106,7 +108,9 @@ describe('Machine state table', function() {
         NE: 0,
         GT: 0,
         LT: 0,
-        PRN: undefined
+        PRN: undefined,
+        SL: 2,
+        INST: '20 MOV A,10'
       },
       {
         A: 10,
@@ -119,7 +123,9 @@ describe('Machine state table', function() {
         NE: 0,
         GT: 0,
         LT: 0,
-        PRN: undefined
+        PRN: undefined,
+        SL: 3,
+        INST: '30 STOP'
       }
     ];
     machine.load(stitch(program));
@@ -142,7 +148,9 @@ describe('Machine state table', function() {
         NE: 0,
         GT: 0,
         LT: 0,
-        PRN: undefined
+        PRN: undefined,
+        SL: 1,
+        INST: '10 START'
       },
       {
         A: 0,
@@ -155,7 +163,9 @@ describe('Machine state table', function() {
         NE: 0,
         GT: 0,
         LT: 0,
-        PRN: undefined
+        PRN: undefined,
+        SL: 2,
+        INST: '20 JMP 40'
       },
       {
         A: 0,
@@ -168,7 +178,9 @@ describe('Machine state table', function() {
         NE: 0,
         GT: 0,
         LT: 0,
-        PRN: undefined
+        PRN: undefined,
+        SL: 4,
+        INST: '40 STOP'
       }
     ];
     machine.load(stitch(program));
@@ -198,7 +210,9 @@ describe('Machine state table', function() {
         NE: 0,
         GT: 0,
         LT: 0,
-        PRN: undefined
+        PRN: undefined,
+        SL: 1,
+        INST: '10 START'
       },
       {
         A: 0,
@@ -211,7 +225,9 @@ describe('Machine state table', function() {
         NE: 1,
         GT: 0,
         LT: 1,
-        PRN: undefined
+        PRN: undefined,
+        SL: 2,
+        INST: '20 CMP A,10'
       },
       {
         A: 0,
@@ -224,7 +240,9 @@ describe('Machine state table', function() {
         NE: 1,
         GT: 0,
         LT: 1,
-        PRN: undefined
+        PRN: undefined,
+        SL: 3,
+        INST: '30 JLE 50'
       },
       {
         A: 20,
@@ -237,7 +255,9 @@ describe('Machine state table', function() {
         NE: 1,
         GT: 0,
         LT: 1,
-        PRN: undefined
+        PRN: undefined,
+        SL: 5,
+        INST: '50 MOV A,20'
       },
       {
         A: 20,
@@ -250,7 +270,9 @@ describe('Machine state table', function() {
         NE: 1,
         GT: 0,
         LT: 1,
-        PRN: undefined
+        PRN: undefined,
+        SL: 6,
+        INST: '60 STOP'
       }
     ];
     machine.load(stitch(program));
@@ -297,5 +319,21 @@ describe("Error reporting while loading",function(){
       assert.equal(2,e.lineNumber);
       assert.equal('20 MO A,B',e.instruction);
     }
+  });
+});
+
+describe("Source mapping at the machine level",function(){
+  it("should provide the source of the line that was executed in the table",function(){
+    const machine = new Machine();
+    const program = ['10 START', '20 MOV A,10', '30 STOP'];
+    machine.load(stitch(program));
+    machine.execute();
+    let table=machine.getTable();
+    let srcMap=table.map(({INST,SL})=>{return {INST,SL}});
+    assert.deepEqual([
+      {INST:'10 START', SL: 1},
+      {INST:'20 MOV A,10', SL: 2},
+      {INST:'30 STOP', SL: 3},
+    ], srcMap);
   });
 });

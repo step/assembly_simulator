@@ -25,14 +25,14 @@ class Machine {
 
   load(program) {
     this.lines = new Lines();
-    let instructions = program.trim().split(/\n/);
+    let instructions = program.split(/\n/);
     instructions.forEach((instruction,index) => {
       let { lineNumber, command, args, nonExecutableLine } = parse(instruction);
       if(nonExecutableLine)
         return;
       let line;
       try {
-        line = Line.create(lineNumber, command, args);
+        line = Line.create(lineNumber, command, args, index+1, instruction);
       } catch (e) {
         e.setLineNumber(index+1);
         e.setInstruction(instruction);
@@ -64,7 +64,7 @@ class Machine {
     return this.prn;
   }
 
-  _addToTable({ regs, flags, nextLine, currLine, prn }) {
+  _addToTable({ regs, flags, nextLine, currLine, prn, srcLine, instruction }) {
     let { A, B, C, D } = regs;
     let { EQ, NE, GT, LT } = flags;
     let row = {
@@ -78,7 +78,9 @@ class Machine {
       LT,
       CL: currLine,
       NL: nextLine,
-      PRN: prn
+      PRN: prn,
+      SL: srcLine,
+      INST: instruction
     };
     this.table.push(row);
   }
@@ -87,18 +89,19 @@ class Machine {
     return this.table;
   }
 
+  _updateCurrentExecState({ regs, flags, nextLine, currLine, prn, srcLine, instruction }) {
+    this._setRegs(regs);
+    this._setFlags(flags);
+    if (prn) this.prn.push(prn);
+    this._addToTable({ regs, flags, nextLine, currLine, prn, srcLine, instruction });
+  }
+
   execute() {
     this._reset();
     let regs = this.getRegs();
     let flags = this.getFlags();
     this.lines.execute(
-      { regs, flags },
-      ({ regs, flags, nextLine, currLine, prn }) => {
-        this._setRegs(regs);
-        this._setFlags(flags);
-        if (prn) this.prn.push(prn);
-        this._addToTable({ regs, flags, nextLine, currLine, prn });
-      }
+      { regs, flags }, this._updateCurrentExecState.bind(this)
     );
   }
 }
