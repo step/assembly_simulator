@@ -1,4 +1,4 @@
-![CircleCI](https://img.shields.io/circleci/project/github/step/assembly_simulator.svg)
+![CircleCI](https://circleci.com/gh/step/assembly_simulator.svg?style=shield)
 
 # Assembly Simulator
 
