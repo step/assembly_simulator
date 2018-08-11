@@ -6,6 +6,8 @@ const MovValToReg = require('./movValToReg');
 const MovRegToReg = require('./movRegToReg');
 const AddValToReg = require('./addValToReg');
 const AddRegToReg = require('./addRegToReg');
+const SubValFromReg = require('./subValFromReg');
+const SubRegFromReg = require('./subRegFromReg');
 const CmpRegToVal = require('./cmpRegToVal');
 const CmpRegToReg = require('./cmpRegToReg');
 const Jmp = require('./jmp.js');
@@ -89,6 +91,17 @@ factories.add = args => {
   if (!isNumericalValue(args[1])) throw new InvalidInstructionException();
 
   return new AddValToReg(args[0].toUpperCase(), +args[1]);
+};
+
+factories.sub = args => {
+  if (!isRegister(args[0])) throw new InvalidInstructionException();
+
+  if (isRegister(args[1]))
+    return new SubRegFromReg(args[0].toUpperCase(), args[1].toUpperCase());
+
+  if (!isNumericalValue(args[1])) throw new InvalidInstructionException();
+
+  return new SubValFromReg(args[0].toUpperCase(), +args[1]);
 };
 
 factories.prn = args => {

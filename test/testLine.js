@@ -139,6 +139,43 @@ describe('Line execute', function() {
     });
   });
 
+  describe('sub', function() {
+    it('should execute a sub val from reg instruction', function() {
+      let line = Line.create(10, 'SUB', ['A', '2']);
+      let currRegs = { A: 5, B: 0, C: 0, D: 0 };
+      let currFlags = { EQ: 0, NE: 0, GT: 0, LT: 0 };
+      let { currLine, regs, flags } = line.execute(currRegs, currFlags);
+      assert.equal(10, currLine);
+      assert.deepEqual({ A: 3, B: 0, C: 0, D: 0 }, regs);
+      assert.deepEqual({ EQ: 0, NE: 0, GT: 0, LT: 0 }, flags);
+    });
+
+    it('should execute a sub reg from reg instruction', function() {
+      let line = Line.create(10, 'SUB', ['A', 'B']);
+      let currRegs = { A: 10, B: 3, C: 0, D: 0 };
+      let currFlags = { EQ: 0, NE: 0, GT: 0, LT: 0 };
+      let { currLine, regs, flags } = line.execute(currRegs, currFlags);
+      assert.equal(10, currLine);
+      assert.deepEqual({ A: 7, B: 3, C: 0, D: 0 }, regs);
+      assert.deepEqual({ EQ: 0, NE: 0, GT: 0, LT: 0 }, flags);
+    });
+
+    it('should throw an error when SUB has an invalid argument', function() {
+      assert.throws(
+        () => Line.create(10, 'SUB', ['10', 'B']),
+        InvalidInstructionException
+      );
+      assert.throws(
+        () => Line.create(10, 'SUB', ['F', 'B']),
+        InvalidInstructionException
+      );
+      assert.throws(
+        () => Line.create(10, 'SUB', ['B', 'F']),
+        InvalidInstructionException
+      );
+    });
+  });
+
   describe('jmp', function() {
     it('should execute a jmp with valid numeric value', function() {
       let line = Line.create(10, 'JMP', ['20']);

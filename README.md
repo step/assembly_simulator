@@ -93,8 +93,24 @@ The "Machine" only recognises positive integers for now.
    10 ADD 2,2
    20 ADD 2,A
    ```
+4. **SUB**
 
-4. **CMP**
+   Subtracts a value from a register and copies the new value into the register. First argument has to be a register. Second argument can either be a register or a positive integer.
+
+   Valid uses
+   ```
+   10 SUB A,2   ;; Subtracts 2 from A and puts it back in A
+   20 SUB B,A   ;; Subtracts A from B and puts it back in B
+   ```
+   Invalid uses
+   ```
+   10 SUB 2,2
+   20 SUB 2,A
+   ```
+
+   Note that one can subtract a greater value from a lesser value and get a negative number even though one can't directly enter negative numbers.
+
+5. **CMP**
 
    The compare instruction sets flags. Based on the arguments it sets one or more flags. The first argument has to be a register. The second argument can be either a positive integer or a register.
 
@@ -115,7 +131,7 @@ The "Machine" only recognises positive integers for now.
    10 CMP 2,2
    20 CMP 2,A
    ```
-5. **JMP**
+6. **JMP**
 
    The `JMP` instruction unconditionally continues execution from the line specified. `JMP` and all other jump instructions leave the registers and flags unmodified. `JMP` takes one argument and that argument has to be a line number.
 
@@ -131,7 +147,7 @@ The "Machine" only recognises positive integers for now.
    20 JMP "10"
    ```
 
-6. **JE**
+7. **JE**
 
    `JE` is a conditional jump instruction that only jumps to a specified line if the `EQ` flag is set. If `EQ` is not set, then the execution continues normally.
 
@@ -147,7 +163,7 @@ The "Machine" only recognises positive integers for now.
    20 JE "10"
    ```
 
-7. **JNE**
+8. **JNE**
 
    `JNE` is a conditional jump instruction that only jumps to a specified line if the `NE` flag is set. If `NE` is not set, then the execution continues normally.
 
@@ -163,7 +179,7 @@ The "Machine" only recognises positive integers for now.
    20 JNE "10"
    ```
 
-8. **JGT**
+9. **JGT**
 
    `JGT` is a conditional jump instruction that only jumps to a specified line if the `GT` flag is set. If `GT` is not set, then the execution continues normally.
 
@@ -179,7 +195,7 @@ The "Machine" only recognises positive integers for now.
    20 JGT "10"
    ```
 
-9. **JGE**
+10. **JGE**
 
    `JGE` is a conditional jump instruction that only jumps to a specified line if the `GT` or `EQ` flags are set. If `GT` or `EQ` are not set, then the execution continues normally.
 
@@ -195,7 +211,7 @@ The "Machine" only recognises positive integers for now.
    20 JGE "10"
    ```
 
-10. **JLT**
+11. **JLT**
 
    `JLT` is a conditional jump instruction that only jumps to a specified line if the `LT` flag is set. If `LT` is not set, then the execution continues normally.
 
@@ -211,7 +227,7 @@ The "Machine" only recognises positive integers for now.
    20 JLT "10"
    ```
 
-11. **JLE**
+12. **JLE**
 
    `JLE` is a conditional jump instruction that only jumps to a specified line if the `LT` or `EQ` flags are set. If `LT` or `EQ` are not set, then the execution continues normally.
 
@@ -227,7 +243,7 @@ The "Machine" only recognises positive integers for now.
    20 JLE "10"
    ```
 
-12. **STOP**
+13. **STOP**
 
    The `STOP` instruction halts execution entirely. It does not take an argument.
 
