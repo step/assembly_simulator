@@ -4,7 +4,7 @@ const parse = instruction => {
   let comment = /^\s*;.*$/;
   let components = /^\s*([0-9]+)\s+([a-zA-Z]+)\s*(.*)*$/;
   if (instruction.match(empty) || instruction.match(comment))
-    return {nonExecutableLine:true};
+    return { nonExecutableLine: true };
   let matches = instruction.match(components);
   try {
     let lineNumber = matches[1];

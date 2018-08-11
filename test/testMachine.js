@@ -17,9 +17,9 @@ describe('Machine loading', function() {
     assert.throws(() => machine.load(stitch(program)));
   });
 
-  it("should ignore empty lines",function(){
+  it('should ignore empty lines', function() {
     const machine = new Machine();
-    const program = ['',' ', '\t'];
+    const program = ['', ' ', '\t'];
     assert.doesNotThrow(() => machine.load(stitch(program)));
   });
 });
@@ -45,7 +45,13 @@ describe('Machine execution', function() {
 
   it('should execute a program with comments', function() {
     const machine = new Machine();
-    const program = ['; this is a comment', '10 START', ' ', '20 MOV A,10', '30 STOP'];
+    const program = [
+      '; this is a comment',
+      '10 START',
+      ' ',
+      '20 MOV A,10',
+      '30 STOP'
+    ];
     machine.load(stitch(program));
     machine.execute();
     assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, machine.getRegs());
@@ -281,59 +287,64 @@ describe('Machine state table', function() {
   });
 });
 
-describe("Error reporting while loading",function(){
-  it("should report the line number at which the error occurred",function(){
+describe('Error reporting while loading', function() {
+  it('should report the line number at which the error occurred', function() {
     const machine = new Machine();
     const program = ['10 STAR'];
 
     try {
       machine.load(stitch(program));
     } catch (e) {
-      assert.equal('InvalidInstructionException',e.name);
-      assert.equal(1,e.lineNumber);
-      assert.equal('10 STAR',e.instruction);
+      assert.equal('InvalidInstructionException', e.name);
+      assert.equal(1, e.lineNumber);
+      assert.equal('10 STAR', e.instruction);
     }
   });
 
-  it("should report the line number when the error is on the last line",function(){
+  it('should report the line number when the error is on the last line', function() {
     const machine = new Machine();
     const program = ['10 START', '20 STO'];
 
     try {
       machine.load(stitch(program));
     } catch (e) {
-      assert.equal('InvalidInstructionException',e.name);
-      assert.equal(2,e.lineNumber);
-      assert.equal('20 STO',e.instruction);
+      assert.equal('InvalidInstructionException', e.name);
+      assert.equal(2, e.lineNumber);
+      assert.equal('20 STO', e.instruction);
     }
   });
 
-  it("should report the line number when the error is on a middle line",function(){
+  it('should report the line number when the error is on a middle line', function() {
     const machine = new Machine();
     const program = ['10 START', '20 MO A,B', '30 STOP'];
 
     try {
       machine.load(stitch(program));
     } catch (e) {
-      assert.equal('InvalidInstructionException',e.name);
-      assert.equal(2,e.lineNumber);
-      assert.equal('20 MO A,B',e.instruction);
+      assert.equal('InvalidInstructionException', e.name);
+      assert.equal(2, e.lineNumber);
+      assert.equal('20 MO A,B', e.instruction);
     }
   });
 });
 
-describe("Source mapping at the machine level",function(){
-  it("should provide the source of the line that was executed in the table",function(){
+describe('Source mapping at the machine level', function() {
+  it('should provide the source of the line that was executed in the table', function() {
     const machine = new Machine();
     const program = ['10 START', '20 MOV A,10', '30 STOP'];
     machine.load(stitch(program));
     machine.execute();
-    let table=machine.getTable();
-    let srcMap=table.map(({INST,SL})=>{return {INST,SL}});
-    assert.deepEqual([
-      {INST:'10 START', SL: 1},
-      {INST:'20 MOV A,10', SL: 2},
-      {INST:'30 STOP', SL: 3},
-    ], srcMap);
+    let table = machine.getTable();
+    let srcMap = table.map(({ INST, SL }) => {
+      return { INST, SL };
+    });
+    assert.deepEqual(
+      [
+        { INST: '10 START', SL: 1 },
+        { INST: '20 MOV A,10', SL: 2 },
+        { INST: '30 STOP', SL: 3 }
+      ],
+      srcMap
+    );
   });
 });

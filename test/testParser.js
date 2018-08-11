@@ -33,17 +33,17 @@ describe('should parse all legal forms', function() {
     assert.equal(command, 'PRN');
     assert.deepEqual(args, [`"HELLO"`]);
   });
-  it("should parse empty lines \'\'",function(){
-    let {nonExecutableLine} = parse(``);
-    assert.equal(true,nonExecutableLine);
+  it("should parse empty lines ''", function() {
+    let { nonExecutableLine } = parse(``);
+    assert.equal(true, nonExecutableLine);
   });
-  it("should parse comment lines",function(){
-    let {nonExecutableLine} = parse(`; this is a comment`);
-    assert.equal(true,nonExecutableLine);
+  it('should parse comment lines', function() {
+    let { nonExecutableLine } = parse(`; this is a comment`);
+    assert.equal(true, nonExecutableLine);
   });
-  it("should parse comment lines with leading spaces",function(){
-    let {nonExecutableLine} = parse(`  ; this is a comment`);
-    assert.equal(true,nonExecutableLine);
+  it('should parse comment lines with leading spaces', function() {
+    let { nonExecutableLine } = parse(`  ; this is a comment`);
+    assert.equal(true, nonExecutableLine);
   });
 });
 

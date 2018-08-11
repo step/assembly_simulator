@@ -477,13 +477,16 @@ describe('Line execute', function() {
   });
 });
 
-describe("Source mapping",function(){
-  it("should report the line number and instruction in the source file",function(){
-    let line=Line.create(10,'START',[],1,'10 START');
+describe('Source mapping', function() {
+  it('should report the line number and instruction in the source file', function() {
+    let line = Line.create(10, 'START', [], 1, '10 START');
     let currRegs = { A: 0, B: 0, C: 0, D: 0 };
     let currFlags = { EQ: 0, NE: 0, GT: 0, LT: 0 };
-    let { currLine, regs, flags, srcLine, instruction } = line.execute(currRegs, currFlags);
-    assert.equal(1,srcLine);
-    assert.equal('10 START',instruction);
+    let { currLine, regs, flags, srcLine, instruction } = line.execute(
+      currRegs,
+      currFlags
+    );
+    assert.equal(1, srcLine);
+    assert.equal('10 START', instruction);
   });
 });

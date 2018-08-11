@@ -3,7 +3,7 @@ class InvalidInstructionException extends Error {
     super();
     this.name = this.constructor.name;
     this.lineNumber = 0;
-    this.instruction = "";
+    this.instruction = '';
   }
 
   setLineNumber(lineNumber) {
