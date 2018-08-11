@@ -1,6 +1,6 @@
 {
   "name": "@craftybones/assembly_simulator",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A simple assembly simulator for a hybrid language that combines BASIC style line numbers with assembly instructions",
   "main": "index.js",
   "dependencies": {},
