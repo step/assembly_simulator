@@ -1,10 +1,19 @@
 const InvalidInstructionException = require('./commands/invalidInstructionException');
-const parse = instruction => {
+
+function isNonExecutable(instruction) {
   let empty = /^\s*$/;
+  let onlyNumber = /^\s*([0-9]+)+\s*$/;
   let comment = /^\s*;.*$/;
+  return (
+    instruction.match(empty) ||
+    instruction.match(comment) ||
+    instruction.match(onlyNumber)
+  );
+}
+
+const parse = instruction => {
   let components = /^\s*([0-9]+)\s+([a-zA-Z]+)\s*(.*)*$/;
-  if (instruction.match(empty) || instruction.match(comment))
-    return { nonExecutableLine: true };
+  if (isNonExecutable(instruction)) return { nonExecutableLine: true };
   let matches = instruction.match(components);
   try {
     let lineNumber = matches[1];
