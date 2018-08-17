@@ -8,10 +8,10 @@ describe('Pop execution', () => {
     let currFlags = { EQ: 0, NE: 0, LT: 0, GT: 0 };
     let currRegs = { A: 0, B: 0, C: 0, D: 0 };
     let stack = new Stack();
-    stack.push(10)
-    let {regs} = pop.execute(currRegs, currFlags, stack);
+    stack.push(10);
+    let { regs } = pop.execute(currRegs, currFlags, stack);
     assert.deepEqual([], stack.asArray());
-    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 },regs);
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, regs);
   });
 
   it('should pop from the stack to the B register', () => {
@@ -19,10 +19,10 @@ describe('Pop execution', () => {
     let currFlags = { EQ: 0, NE: 0, LT: 0, GT: 0 };
     let currRegs = { A: 0, B: 0, C: 0, D: 0 };
     let stack = new Stack();
-    stack.push(10)
-    let {regs} = pop.execute(currRegs, currFlags, stack);
+    stack.push(10);
+    let { regs } = pop.execute(currRegs, currFlags, stack);
     assert.deepEqual([], stack.asArray());
-    assert.deepEqual({ A: 0, B: 10, C: 0, D: 0 },regs);
+    assert.deepEqual({ A: 0, B: 10, C: 0, D: 0 }, regs);
   });
 
   it('should not modify the current flags', () => {
@@ -30,10 +30,10 @@ describe('Pop execution', () => {
     let currFlags = { EQ: 0, NE: 0, LT: 0, GT: 0 };
     let currRegs = { A: 0, B: 0, C: 0, D: 0 };
     let stack = new Stack();
-    stack.push(10)
-    let {regs,flags} = pop.execute(currRegs, currFlags, stack);
+    stack.push(10);
+    let { regs, flags } = pop.execute(currRegs, currFlags, stack);
     assert.deepEqual([], stack.asArray());
-    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 },regs);
-    assert.deepEqual({ EQ: 0, NE: 0, LT: 0, GT: 0 },flags);
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, regs);
+    assert.deepEqual({ EQ: 0, NE: 0, LT: 0, GT: 0 }, flags);
   });
 });

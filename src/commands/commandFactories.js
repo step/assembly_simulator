@@ -19,6 +19,8 @@ const JmpGt = require('./jmpGt.js');
 const JmpGe = require('./jmpGe.js');
 const PrnLiteral = require('./prnLiteral.js');
 const PrnReg = require('./prnReg.js');
+const Push = require('./push.js');
+const Pop = require('./pop.js');
 
 const isRegister = arg => arg.toString().match(/^[ABCD]$/i);
 const isNumericalValue = arg => arg.toString().match(/^[0-9]+$/i);
@@ -114,6 +116,20 @@ factories.prn = args => {
   if (isRegister(args[0])) return new PrnReg(args[0].toUpperCase());
 
   throw new InvalidInstructionException();
+};
+
+factories.push = args => {
+  if (args.length != 1 || !isRegister(args[0]))
+    throw new InvalidInstructionException();
+
+  return new Push(args[0]);
+};
+
+factories.pop = args => {
+  if (args.length != 1 || !isRegister(args[0]))
+    throw new InvalidInstructionException();
+
+  return new Pop(args[0]);
 };
 
 module.exports = factories;

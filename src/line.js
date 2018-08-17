@@ -14,8 +14,8 @@ class Line {
     return this.lineNumber;
   }
 
-  execute(currRegs, currFlags) {
-    let result = this.command.execute(currRegs, currFlags);
+  execute(currRegs, currFlags, stack) {
+    let result = this.command.execute(currRegs, currFlags, stack);
     result.currLine = this.lineNumber;
     result.srcLine = this.srcLine;
     result.instruction = this.instruction;

@@ -1,4 +1,5 @@
 const Line = require('../src/line.js');
+const Stack = require('../src/stack.js');
 const assert = require('assert');
 const InvalidInstructionException = require('../src/commands/invalidInstructionException.js');
 
@@ -471,6 +472,67 @@ describe('Line execute', function() {
       );
       assert.throws(
         () => Line.create(10, 'PRN', ['E']),
+        InvalidInstructionException
+      );
+    });
+  });
+
+  describe('push', () => {
+    it('should push a single register on the stack', () => {
+      let line = Line.create(10, 'PUSH', ['A'], 1, '10 PUSH A');
+      let currRegs = { A: 10, B: 0, C: 0, D: 0 };
+      let currFlags = { EQ: 0, NE: 0, GT: 0, LT: 0 };
+      let stack = new Stack();
+      let { currLine, regs, flags, srcLine, instruction } = line.execute(
+        currRegs,
+        currFlags,
+        stack
+      );
+      assert.deepEqual([10], stack.asArray());
+      assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, regs);
+      assert.deepEqual({ EQ: 0, NE: 0, GT: 0, LT: 0 }, flags);
+    });
+
+    it('should throw an error when push has an invalid argument', function() {
+      assert.throws(
+        () => Line.create(10, 'PUSH', []),
+        InvalidInstructionException
+      );
+      assert.throws(
+        () => Line.create(10, 'PUSH', ['A', 'B']),
+        InvalidInstructionException
+      );
+      assert.throws(
+        () => Line.create(10, 'PUSH', ['E']),
+        InvalidInstructionException
+      );
+    });
+  });
+
+  describe('pop', () => {
+    it('should pop the stack into the specified register', () => {
+      let line = Line.create(10, 'POP', ['A'], 1, '10 POP A');
+      let currRegs = { A: 0, B: 0, C: 0, D: 0 };
+      let currFlags = { EQ: 0, NE: 0, GT: 0, LT: 0 };
+      let stack = new Stack();
+      stack.push(10);
+      let { regs, flags } = line.execute(currRegs, currFlags, stack);
+      assert.deepEqual([], stack.asArray());
+      assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, regs);
+      assert.deepEqual({ EQ: 0, NE: 0, GT: 0, LT: 0 }, flags);
+    });
+
+    it('should throw an error when pop has an invalid argument', function() {
+      assert.throws(
+        () => Line.create(10, 'POP', []),
+        InvalidInstructionException
+      );
+      assert.throws(
+        () => Line.create(10, 'POP', ['A', 'B']),
+        InvalidInstructionException
+      );
+      assert.throws(
+        () => Line.create(10, 'POP', ['E']),
         InvalidInstructionException
       );
     });

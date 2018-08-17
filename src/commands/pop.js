@@ -18,8 +18,8 @@ class Pop {
    * @returns {Object} current registers and current flags are returned unchanged with the popped value in the specified register
    */
   execute(currRegs, currFlags, stack) {
-    let {A,B,C,D} = currRegs;
-    let newRegs = {A,B,C,D};
+    let { A, B, C, D } = currRegs;
+    let newRegs = { A, B, C, D };
     let value = stack.pop();
     newRegs[this.reg] = value;
     return { regs: newRegs, flags: currFlags };
