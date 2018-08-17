@@ -1,6 +1,7 @@
 const assert = require('assert');
 const Machine = require('../src/machine.js');
 const InvalidInstructionException = require('../src/commands/invalidInstructionException.js');
+const StackUnderFlowException = require('../src/stackUnderFlowException.js');
 
 const stitch = lines => lines.join('\n');
 
@@ -80,6 +81,41 @@ describe('Machine execution', function() {
     assert.deepEqual(['HELLO', '10'], machine.getPrn());
     assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, machine.getRegs());
     assert.deepEqual({ NE: 0, EQ: 0, LT: 0, GT: 0 }, machine.getFlags());
+  });
+});
+
+describe('Machine with stack', () => {
+  it('should execute a program that pushes a register onto the stack', () => {
+    const machine = new Machine();
+    const program = ['10 START', '20 MOV A,10', '30 PUSH A', '40 STOP'];
+    machine.load(stitch(program));
+    machine.execute();
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, machine.getRegs());
+    assert.deepEqual({ NE: 0, EQ: 0, LT: 0, GT: 0 }, machine.getFlags());
+    assert.deepEqual([10], machine.getStack());
+  });
+
+  it('should execute a program that pops the stack into a register', () => {
+    const machine = new Machine();
+    const program = [
+      '10 START',
+      '20 MOV A,10',
+      '30 PUSH A',
+      '40 POP B',
+      '50 STOP'
+    ];
+    machine.load(stitch(program));
+    machine.execute();
+    assert.deepEqual({ A: 10, B: 10, C: 0, D: 0 }, machine.getRegs());
+    assert.deepEqual({ NE: 0, EQ: 0, LT: 0, GT: 0 }, machine.getFlags());
+    assert.deepEqual([], machine.getStack());
+  });
+
+  it('should throw an exception when it tries to pop an empty stack', () => {
+    const machine = new Machine();
+    const program = ['10 START', '30 POP B', '50 STOP'];
+    machine.load(stitch(program));
+    assert.throws(() => machine.execute());
   });
 });
 

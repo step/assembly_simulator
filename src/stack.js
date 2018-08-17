@@ -1,3 +1,4 @@
+const StackUnderflowException = require('./stackUnderflowException.js');
 /**
  * A simple Stack representation that Machine will use to keep track of a call stack
  */
@@ -20,8 +21,10 @@ class Stack {
   /**
    * Pops the topmost value from the stack
    * @returns {number}
+   * @throws {StackUnderflowException} Will throw an error if you try to pop an empty stack
    */
   pop() {
+    if (this.stack.length == 0) throw new StackUnderflowException();
     return this.stack.pop();
   }
 

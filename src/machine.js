@@ -1,11 +1,13 @@
 const parse = require('./parse.js');
 const Line = require('./line.js');
+const Stack = require('./stack.js');
 const Lines = require('./lines.js');
 
 class Machine {
   constructor() {
     this._reset();
     this.lines = new Lines();
+    this.stack = new Stack();
   }
 
   _reset() {
@@ -63,6 +65,10 @@ class Machine {
     return this.prn;
   }
 
+  getStack() {
+    return this.stack.asArray();
+  }
+
   _addToTable({ regs, flags, nextLine, currLine, prn, srcLine, instruction }) {
     let { A, B, C, D } = regs;
     let { EQ, NE, GT, LT } = flags;
@@ -115,8 +121,9 @@ class Machine {
     this._reset();
     let regs = this.getRegs();
     let flags = this.getFlags();
+    let stack = this.stack;
     this.lines.execute(
-      { regs, flags },
+      { regs, flags, stack },
       this._updateCurrentExecState.bind(this)
     );
   }

@@ -536,6 +536,14 @@ describe('Line execute', function() {
         InvalidInstructionException
       );
     });
+
+    it('should throw an error when trying to pop an empty stack', () => {
+      let line = Line.create(10, 'POP', ['A'], 1, '10 POP A');
+      let currRegs = { A: 0, B: 0, C: 0, D: 0 };
+      let currFlags = { EQ: 0, NE: 0, GT: 0, LT: 0 };
+      let stack = new Stack();
+      assert.throws(() => line.execute(currRegs, currFlags, stack));
+    });
   });
 });
 

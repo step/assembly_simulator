@@ -15,7 +15,14 @@ class Line {
   }
 
   execute(currRegs, currFlags, stack) {
-    let result = this.command.execute(currRegs, currFlags, stack);
+    let result;
+    try {
+      result = this.command.execute(currRegs, currFlags, stack);
+    } catch (error) {
+      error.setLineNumber(this.lineNumber);
+      error.setInstruction(this.instruction);
+      throw error;
+    }
     result.currLine = this.lineNumber;
     result.srcLine = this.srcLine;
     result.instruction = this.instruction;

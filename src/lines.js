@@ -15,12 +15,12 @@ class Lines {
   }
 
   execute(initState, cb) {
-    let { regs, flags } = initState;
+    let { regs, flags, stack } = initState;
     let state = { regs, flags, halt: false };
     let programCounter = 0;
     while (this.shouldExecute(programCounter, state.halt)) {
       let line = this.lines[programCounter];
-      state = line.execute(state.regs, state.flags);
+      state = line.execute(state.regs, state.flags, stack);
       programCounter++;
       if (state.nextLine) programCounter = this.lineNumbers[state.nextLine];
       else {
