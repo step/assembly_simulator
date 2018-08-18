@@ -119,6 +119,52 @@ describe('Machine with stack', () => {
   });
 });
 
+describe('Machine step wise execution', () => {
+  it('should execute a simple program step wise', () => {
+    const machine = new Machine();
+    const program = ['10 START', '30 MOV A,10', '40 STOP'];
+    let actualRegs = {};
+    const cb = state => {
+      let { A, B, C, D } = state.regs;
+      actualRegs = { A, B, C, D };
+    };
+    machine.load(stitch(program));
+    machine.executeStepWise(cb);
+    machine.nextStep();
+    assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, actualRegs);
+    machine.nextStep();
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, actualRegs);
+    machine.nextStep();
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, actualRegs);
+  });
+
+  it('should execute a program with jumps step wise', () => {
+    const machine = new Machine();
+    const program = ['10 START', '30 JMP 50', '40 MOV A,10', '50 STOP'];
+    let actualCurrLine, actualNextLine, actualRegs;
+    const cb = ({ nextLine, currLine, regs }) => {
+      let { A, B, C, D } = regs;
+      actualRegs = { A, B, C, D };
+      actualCurrLine = currLine;
+      actualNextLine = nextLine;
+    };
+    machine.load(stitch(program));
+    machine.executeStepWise(cb);
+    machine.nextStep();
+    assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, actualRegs);
+    assert.equal('10', actualCurrLine);
+    assert.equal('30', actualNextLine);
+    machine.nextStep();
+    assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, actualRegs);
+    assert.equal('30', actualCurrLine);
+    assert.equal('50', actualNextLine);
+    machine.nextStep();
+    assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, actualRegs);
+    assert.equal('50', actualCurrLine);
+    assert.equal(' ', actualNextLine);
+  });
+});
+
 describe('Machine state table', function() {
   it('should generate a state table for a basic program', function() {
     const machine = new Machine();

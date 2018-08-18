@@ -14,21 +14,31 @@ class Lines {
     return pc < this.lines.length && !halt;
   }
 
-  execute(initState, cb) {
+  getStepWiseExecutor(initState, cb) {
     let { regs, flags, stack } = initState;
     let state = { regs, flags, halt: false };
     let programCounter = 0;
-    while (this.shouldExecute(programCounter, state.halt)) {
-      let line = this.lines[programCounter];
-      state = line.execute(state.regs, state.flags, stack);
-      programCounter++;
-      if (state.nextLine) programCounter = this.lineNumbers[state.nextLine];
-      else {
-        let lineToExecute = this.lines[programCounter];
-        state.nextLine = lineToExecute ? lineToExecute.getLineNumber() : ' ';
+    let executor = () => {
+      if (this.shouldExecute(programCounter, state.halt)) {
+        let line = this.lines[programCounter];
+        state = line.execute(state.regs, state.flags, stack);
+        programCounter++;
+        if (state.nextLine) programCounter = this.lineNumbers[state.nextLine];
+        else {
+          let lineToExecute = this.lines[programCounter];
+          state.nextLine = lineToExecute ? lineToExecute.getLineNumber() : ' ';
+        }
+        cb(state);
+        return true;
       }
-      cb(state);
-    }
+      return false;
+    };
+    return executor;
+  }
+
+  execute(initState, cb) {
+    let executor = this.getStepWiseExecutor(initState, cb);
+    while (executor()) {}
   }
 }
 

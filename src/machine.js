@@ -127,6 +127,25 @@ class Machine {
       this._updateCurrentExecState.bind(this)
     );
   }
+
+  nextStep() {
+    this._stepWiseExecutor();
+  }
+
+  executeStepWise(cb) {
+    this._reset();
+    let wrappedCb = state => {
+      this._updateCurrentExecState(state);
+      cb(state);
+    };
+    let regs = this.getRegs();
+    let flags = this.getFlags();
+    let stack = this.stack;
+    this._stepWiseExecutor = this.lines.getStepWiseExecutor(
+      { regs, flags, stack },
+      wrappedCb
+    );
+  }
 }
 
 module.exports = Machine;
