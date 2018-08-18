@@ -5,6 +5,7 @@ const StackUnderflowException = require('./stackUnderflowException.js');
 class Stack {
   /**
    * Initialises a stack
+   * @constructor
    */
   constructor() {
     this.stack = [];
