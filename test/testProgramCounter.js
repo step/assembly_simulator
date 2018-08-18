@@ -46,4 +46,59 @@ describe('Program Counter get line', () => {
       assert.equal(1, pc.getCurrentLineIndex());
     });
   });
+
+  describe('halt', () => {
+    it('should halt the updation of program counter', () => {
+      let lineNumbers = ['10', '20', '30', '40'];
+      let pc = new ProgramCounter(lineNumbers);
+      assert.equal(10, pc.getCurrentLineNumber());
+      pc.update();
+      assert.equal(20, pc.getCurrentLineNumber());
+      assert.equal(30, pc.getNextLineNumber());
+      pc.halt();
+      pc.update();
+      assert.equal(20, pc.getCurrentLineNumber());
+      assert.equal(' ', pc.getNextLineNumber());
+    });
+
+    it('should prevent setNextLine from having an effect', () => {
+      let lineNumbers = ['10', '20', '30', '40'];
+      let pc = new ProgramCounter(lineNumbers);
+      assert.equal(10, pc.getCurrentLineNumber());
+      pc.update();
+      assert.equal(20, pc.getCurrentLineNumber());
+      assert.equal(30, pc.getNextLineNumber());
+      pc.halt();
+      pc.setNextLine(30);
+      assert.equal(20, pc.getCurrentLineNumber());
+      assert.equal(' ', pc.getNextLineNumber());
+    });
+  });
+});
+
+describe('should halt', () => {
+  it('should decide to halt when the current line is illegal', () => {
+    let lineNumbers = ['10', '20', '30', '40'];
+    let pc = new ProgramCounter(lineNumbers);
+    pc.setNextLine(800);
+    pc.update();
+    assert.equal(true, pc.shouldHalt());
+  });
+
+  it('should decide to halt when the line index exceeds the length of the program', () => {
+    let lineNumbers = ['10', '20', '30'];
+    let pc = new ProgramCounter(lineNumbers);
+    pc.update();
+    pc.update();
+    pc.update();
+    pc.update();
+    assert.equal(true, pc.shouldHalt());
+  });
+
+  it('should halt when explicitly asked to halt', () => {
+    let lineNumbers = ['10', '20', '30'];
+    let pc = new ProgramCounter(lineNumbers);
+    pc.halt();
+    assert.equal(true, pc.shouldHalt());
+  });
 });

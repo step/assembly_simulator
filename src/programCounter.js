@@ -17,6 +17,7 @@ class ProgramCounter {
     this._indexOf = lineNumbers.reduce(lookupByLineNumber, {});
     this._currentIndex = 0;
     this._nextIndex = 1;
+    this._halt = false;
   }
 
   /**
@@ -32,13 +33,14 @@ class ProgramCounter {
    * @returns {string} The line number that is currently executing
    */
   getNextLineNumber() {
-    return this._lineNumbers[this._nextIndex];
+    return this._halt ? ' ' : this._lineNumbers[this._nextIndex];
   }
 
   /**
    * This method updates the current and next line indices respectively.
    */
   update() {
+    if (this._halt) return;
     this._currentIndex = this._nextIndex;
     this._nextIndex++;
   }
@@ -48,6 +50,7 @@ class ProgramCounter {
    * @param {string} lineNumber
    */
   setNextLine(lineNumber) {
+    if (this._halt) return;
     this._nextIndex = this._indexOf[lineNumber];
   }
 
@@ -57,6 +60,25 @@ class ProgramCounter {
    */
   getCurrentLineIndex() {
     return this._currentIndex;
+  }
+
+  /**
+   * Halts execution. This implies that update will no longer have an impact on the index. Neither will setNextLine. Typically used by the Stop instruction.
+   */
+  halt() {
+    this._halt = true;
+  }
+
+  /**
+   * This method returns whether whoever is executing should halt execution. It answers true if the _currentIndex is undefined or if the currentIndex exceeds the number of lines of the program. It also halts if it has previously been asked to halt via the halt method
+   * @returns {boolean}
+   */
+  shouldHalt() {
+    return (
+      this._halt ||
+      !this._currentIndex ||
+      this._currentIndex >= this._lineNumbers.length
+    );
   }
 }
 
