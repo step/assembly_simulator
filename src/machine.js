@@ -129,7 +129,10 @@ class Machine {
   }
 
   nextStep() {
-    this._stepWiseExecutor();
+    if(this._stepWiseExecutor) {
+      let shouldExecute = this._stepWiseExecutor();
+      if(!shouldExecute) this._stepWiseExecutor = undefined;
+    }
   }
 
   executeStepWise(cb) {

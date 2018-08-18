@@ -163,6 +163,58 @@ describe('Machine step wise execution', () => {
     assert.equal('50', actualCurrLine);
     assert.equal(' ', actualNextLine);
   });
+
+  it('should execute a program with compare statements step wise',() => {
+    const machine = new Machine();
+    const program = [
+      '10 START',
+      '20 MOV A,10',
+      '30 CMP A,10',
+      '40 JE 60',
+      '50 PRN A',
+      '60 STOP'
+    ];
+    let actualFlags;
+    let cb=(({flags})=>actualFlags=flags);
+    machine.load(stitch(program));
+    machine.executeStepWise(cb);
+    machine.nextStep();
+    assert.deepEqual({ EQ: 0, NE: 0, GT: 0, LT: 0},actualFlags);
+    machine.nextStep();
+    assert.deepEqual({ EQ: 0, NE: 0, GT: 0, LT: 0},actualFlags);
+    machine.nextStep();
+    assert.deepEqual({ EQ: 1, NE: 0, GT: 0, LT: 0},actualFlags);
+  });
+
+  it('should not execute the next step if stepwise execution has not begun',() => {
+    const machine = new Machine();
+    const program = '10 MOV A, 10';
+    machine.load(program);
+    machine.nextStep();
+    assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, machine.getRegs());
+  });
+
+  it('should not execute the next step if stepwise execution is over',() => {
+    const machine = new Machine();
+    const program = ['10 START','20 MOV A,10','30 STOP'];
+    machine.load(stitch(program));
+    let lineHasExecuted = false;
+    machine.executeStepWise(()=>lineHasExecuted=true);
+    machine.nextStep();
+    assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, machine.getRegs());
+    assert.equal(true,lineHasExecuted);
+    lineHasExecuted = false;
+    machine.nextStep();
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, machine.getRegs());
+    assert.equal(true,lineHasExecuted);
+    lineHasExecuted = false;
+    machine.nextStep();
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, machine.getRegs());
+    assert.equal(true,lineHasExecuted);
+    lineHasExecuted = false;
+    machine.nextStep();
+    assert.equal(false,lineHasExecuted);
+  });
 });
 
 describe('Machine state table', function() {
