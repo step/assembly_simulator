@@ -24,7 +24,12 @@ describe('Line execute', function() {
       let currFlags = { EQ: 0, NE: 0, GT: 0, LT: 0 };
       let stack = new Stack();
       let pc = new ProgramCounter(['10', '20', '30']);
-      let { regs, flags, currLine } = line.execute(currRegs, currFlags, stack, pc);
+      let { regs, flags, currLine } = line.execute(
+        currRegs,
+        currFlags,
+        stack,
+        pc
+      );
       assert.equal(true, pc.shouldHalt());
       assert.equal(10, currLine);
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
