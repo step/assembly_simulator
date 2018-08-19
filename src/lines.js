@@ -19,10 +19,10 @@ class Lines {
   getStepWiseExecutor(initState, cb) {
     let { regs, flags, stack } = initState;
     let state = { regs, flags, halt: false };
-    let lineNumbers = this.lines.map((l)=>l.getLineNumber());
+    let lineNumbers = this.lines.map(l => l.getLineNumber());
     let programCounter = new ProgramCounter(lineNumbers);
     let executor = () => {
-      if(programCounter.shouldHalt()) return false;
+      if (programCounter.shouldHalt()) return false;
       let line = this.lines[programCounter.getCurrentLineIndex()];
       state = line.execute(state.regs, state.flags, stack, programCounter);
       state.nextLine = programCounter.getNextLineNumber();

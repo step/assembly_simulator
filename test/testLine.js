@@ -184,7 +184,7 @@ describe('Line execute', function() {
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 0, NE: 0, GT: 0, LT: 0 };
       let stack = new Stack();
-      let pc = new ProgramCounter(['10','20']);
+      let pc = new ProgramCounter(['10', '20']);
       let { currLine, regs, flags, nextLine } = line.execute(
         currRegs,
         currFlags,
@@ -192,7 +192,7 @@ describe('Line execute', function() {
         pc
       );
       assert.equal(10, currLine);
-      assert.equal('20',pc.getNextLineNumber());
+      assert.equal('20', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 0, NE: 0, GT: 0, LT: 0 }, flags);
     });
@@ -211,15 +211,19 @@ describe('Line execute', function() {
 
   describe('je', function() {
     it('should execute a je with valid numeric value', function() {
-      let line = Line.create(10, 'JE', ['20']);
+      let line = Line.create(10, 'JE', ['30']);
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 1, NE: 0, GT: 0, LT: 0 };
-      let { currLine, regs, flags, nextLine } = line.execute(
+      let stack = new Stack();
+      let pc = new ProgramCounter(['10', '20', '30']);
+      let { currLine, regs, flags } = line.execute(
         currRegs,
-        currFlags
+        currFlags,
+        stack,
+        pc
       );
       assert.equal(10, currLine);
-      assert.equal('20', nextLine);
+      assert.equal('30', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 1, NE: 0, GT: 0, LT: 0 }, flags);
     });
@@ -238,15 +242,19 @@ describe('Line execute', function() {
 
   describe('jne', function() {
     it('should execute a jne with valid numeric value', function() {
-      let line = Line.create(10, 'JNE', ['20']);
+      let line = Line.create(10, 'JNE', ['30']);
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 0, NE: 1, GT: 1, LT: 0 };
-      let { currLine, regs, flags, nextLine } = line.execute(
+      let stack = new Stack();
+      let pc = new ProgramCounter(['10', '20', '30']);
+      let { currLine, regs, flags } = line.execute(
         currRegs,
-        currFlags
+        currFlags,
+        stack,
+        pc
       );
       assert.equal(10, currLine);
-      assert.equal('20', nextLine);
+      assert.equal('30', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 0, NE: 1, GT: 1, LT: 0 }, flags);
     });
@@ -265,15 +273,19 @@ describe('Line execute', function() {
 
   describe('jlt', function() {
     it('should execute a jlt with valid numeric value', function() {
-      let line = Line.create(10, 'JLT', ['20']);
+      let line = Line.create(10, 'JLT', ['30']);
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 0, NE: 1, GT: 0, LT: 1 };
-      let { currLine, regs, flags, nextLine } = line.execute(
+      let stack = new Stack();
+      let pc = new ProgramCounter(['10', '20', '30']);
+      let { currLine, regs, flags } = line.execute(
         currRegs,
-        currFlags
+        currFlags,
+        stack,
+        pc
       );
       assert.equal(10, currLine);
-      assert.equal('20', nextLine);
+      assert.equal('30', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 0, NE: 1, GT: 0, LT: 1 }, flags);
     });
@@ -296,13 +308,8 @@ describe('Line execute', function() {
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 0, NE: 1, GT: 0, LT: 1 };
       let stack = new Stack();
-      let pc = new ProgramCounter(['10','70']);
-      let { regs, flags } = line.execute(
-        currRegs,
-        currFlags,
-        stack,
-        pc
-      );
+      let pc = new ProgramCounter(['10', '70']);
+      let { regs, flags } = line.execute(currRegs, currFlags, stack, pc);
       assert.equal(10, pc.getCurrentLineNumber());
       assert.equal('70', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
@@ -314,13 +321,8 @@ describe('Line execute', function() {
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 1, NE: 0, GT: 0, LT: 0 };
       let stack = new Stack();
-      let pc = new ProgramCounter(['10','70']);
-      let { currLine, regs, flags, nextLine } = line.execute(
-        currRegs,
-        currFlags,
-        stack,
-        pc
-      );
+      let pc = new ProgramCounter(['10', '70']);
+      let { regs, flags } = line.execute(currRegs, currFlags, stack, pc);
       assert.equal(10, pc.getCurrentLineNumber());
       assert.equal('70', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
@@ -355,15 +357,19 @@ describe('Line execute', function() {
 
   describe('jgt', function() {
     it('should execute a jgt with valid numeric value', function() {
-      let line = Line.create(10, 'JGT', ['20']);
+      let line = Line.create(10, 'JGT', ['30']);
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 0, NE: 1, GT: 1, LT: 0 };
-      let { currLine, regs, flags, nextLine } = line.execute(
+      let stack = new Stack();
+      let pc = new ProgramCounter(['10', '20', '30']);
+      let { currLine, regs, flags } = line.execute(
         currRegs,
-        currFlags
+        currFlags,
+        stack,
+        pc
       );
       assert.equal(10, currLine);
-      assert.equal('20', nextLine);
+      assert.equal('30', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 0, NE: 1, GT: 1, LT: 0 }, flags);
     });
@@ -385,12 +391,16 @@ describe('Line execute', function() {
       let line = Line.create(10, 'JGE', ['70']);
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 0, NE: 1, GT: 1, LT: 0 };
-      let { currLine, regs, flags, nextLine } = line.execute(
+      let stack = new Stack();
+      let pc = new ProgramCounter(['10', '70']);
+      let { currLine, regs, flags } = line.execute(
         currRegs,
-        currFlags
+        currFlags,
+        stack,
+        pc
       );
       assert.equal(10, currLine);
-      assert.equal('70', nextLine);
+      assert.equal('70', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 0, NE: 1, GT: 1, LT: 0 }, flags);
     });
@@ -399,12 +409,16 @@ describe('Line execute', function() {
       let line = Line.create(10, 'JGE', ['70']);
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 1, NE: 0, GT: 0, LT: 0 };
-      let { currLine, regs, flags, nextLine } = line.execute(
+      let stack = new Stack();
+      let pc = new ProgramCounter(['10', '70']);
+      let { currLine, regs, flags } = line.execute(
         currRegs,
-        currFlags
+        currFlags,
+        stack,
+        pc
       );
       assert.equal(10, currLine);
-      assert.equal('70', nextLine);
+      assert.equal('70', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 1, NE: 0, GT: 0, LT: 0 }, flags);
     });

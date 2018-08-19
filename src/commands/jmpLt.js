@@ -3,13 +3,10 @@ class JmpLt {
     this.lineNumber = lineNumber;
   }
 
-  execute(regs, flags) {
+  execute(regs, flags, stack, programCounter) {
     let { LT } = flags;
-    let nextLine = undefined;
-    if (LT == 1) {
-      nextLine = this.lineNumber;
-    }
-    return { regs, flags, nextLine };
+    if (LT == 1) programCounter.setNextLine(this.lineNumber);
+    return { regs, flags };
   }
 }
 

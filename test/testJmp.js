@@ -9,10 +9,10 @@ describe('Jmp execution', function() {
     let currFlags = { EQ: 0, NE: 0, LT: 0, GT: 0 };
     let currRegs = { A: 0, B: 10, C: 0, D: 0 };
     let stack = new Stack();
-    let pc = new ProgramCounter([10,70]);
+    let pc = new ProgramCounter([10, 70]);
     let { regs, flags } = jmp.execute(currRegs, currFlags, stack, pc);
     assert.deepEqual(regs, { A: 0, B: 10, C: 0, D: 0 });
     assert.deepEqual(flags, { EQ: 0, NE: 0, LT: 0, GT: 0 });
-    assert.equal(70,pc.getNextLineNumber());
+    assert.equal(70, pc.getNextLineNumber());
   });
 });

@@ -36,7 +36,7 @@ class ProgramCounter {
     let nextLineNumber = this._lineNumbers[this._nextIndex];
     if (this._halt || nextLineNumber == undefined) {
       return ' ';
-    } 
+    }
     return this._lineNumbers[this._nextIndex];
   }
 

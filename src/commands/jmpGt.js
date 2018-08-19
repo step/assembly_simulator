@@ -3,13 +3,10 @@ class JmpGt {
     this.lineNumber = lineNumber;
   }
 
-  execute(regs, flags) {
+  execute(regs, flags, stack, programCounter) {
     let { GT } = flags;
-    let nextLine = undefined;
-    if (GT == 1) {
-      nextLine = this.lineNumber;
-    }
-    return { regs, flags, nextLine };
+    if (GT == 1) programCounter.setNextLine(this.lineNumber);
+    return { regs, flags };
   }
 }
 

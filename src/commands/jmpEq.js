@@ -3,13 +3,10 @@ class JmpEq {
     this.lineNumber = lineNumber;
   }
 
-  execute(regs, flags) {
+  execute(regs, flags, stack, programCounter) {
     let { EQ } = flags;
-    let nextLine = undefined;
-    if (EQ == 1) {
-      nextLine = this.lineNumber;
-    }
-    return { regs, flags, nextLine };
+    if (EQ == 1) programCounter.setNextLine(this.lineNumber);
+    return { regs, flags };
   }
 }
 

@@ -3,13 +3,12 @@ class JmpGe {
     this.lineNumber = lineNumber;
   }
 
-  execute(regs, flags) {
+  execute(regs, flags, stack, programCounter) {
     let { GT, EQ } = flags;
-    let nextLine = undefined;
     if (GT == 1 || EQ == 1) {
-      nextLine = this.lineNumber;
+      programCounter.setNextLine(this.lineNumber);
     }
-    return { regs, flags, nextLine };
+    return { regs, flags };
   }
 }
 

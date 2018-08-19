@@ -3,13 +3,10 @@ class JmpNe {
     this.lineNumber = lineNumber;
   }
 
-  execute(regs, flags) {
+  execute(regs, flags, stack, programCounter) {
     let { NE } = flags;
-    let nextLine = undefined;
-    if (NE == 1) {
-      nextLine = this.lineNumber;
-    }
-    return { regs, flags, nextLine };
+    if (NE == 1) programCounter.setNextLine(this.lineNumber);
+    return { regs, flags };
   }
 }
 
