@@ -482,3 +482,21 @@ describe('Source mapping at the machine level', function() {
     );
   });
 });
+
+describe.skip('Machine with functions',() => {
+  it('should execute a basic function',() => {
+    const machine = new Machine();
+    const program = [
+      '10 START',
+      '20 JMP 60',
+      '30 FUNC A10',
+      '40 MOV A,10',
+      '50 RET',
+      '60 CALL A10',
+      '70 STOP'
+    ];
+    machine.load(stitch(program));
+    machine.execute();
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 },machine.getRegs());
+  });
+});

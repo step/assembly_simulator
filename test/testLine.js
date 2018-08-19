@@ -579,6 +579,34 @@ describe('Line execute', function() {
       assert.throws(() => line.execute(currRegs, currFlags, stack));
     });
   });
+
+  describe('func',() => {
+    it('should execute a func instruction without changing flags,regs,stack',() => {
+      let line = Line.create(10, 'FUNC', ['MUL'], 1, '10 FUNC MUL');
+      let currRegs = { A: 10, B: 20, C: 30, D: 40 };
+      let currFlags = { EQ: 0, NE: 1, GT: 1, LT: 0 };
+      let stack = new Stack();
+      let pc = new ProgramCounter([10,20]);
+      let { regs, flags } = line.execute(currRegs, currFlags, stack, pc);
+      assert.deepEqual({ A: 10, B: 20, C: 30, D: 40 }, regs);
+      assert.deepEqual({ EQ: 0, NE: 1, GT: 1, LT: 0 }, flags);
+    });
+
+    it('throw an error when FUNC has an invalid argument',() => {
+      assert.throws(
+        () => Line.create(10, 'FUNC', []),
+        InvalidInstructionException
+      );
+      assert.throws(
+        () => Line.create(10, 'FUNC', ['0ABC']),
+        InvalidInstructionException
+      );
+      assert.throws(
+        () => Line.create(10, 'FUNC', ['ABC', 'BCD']),
+        InvalidInstructionException
+      );
+    });
+  });
 });
 
 describe('Source mapping', function() {

@@ -45,15 +45,15 @@ describe('should parse all legal forms', function() {
     let { nonExecutableLine } = parse(`  ; this is a comment`);
     assert.equal(true, nonExecutableLine);
   });
-  it('should parse line with only line number', function() {
+  it('should parse line with only a line number', function() {
     let { nonExecutableLine } = parse(`10`);
     assert.equal(true, nonExecutableLine);
   });
-  it('should parse line with only line number with spaces', function() {
+  it('should parse line with only a line number and spaces', function() {
     let { nonExecutableLine } = parse(`10  `);
     assert.equal(true, nonExecutableLine);
   });
-  it('should parse line with only line number with newLine at end', function() {
+  it('should parse line with only line number and a newLine at end', function() {
     let { nonExecutableLine } = parse(`10 \n`);
     assert.equal(true, nonExecutableLine);
   });

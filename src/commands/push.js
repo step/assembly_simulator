@@ -5,6 +5,7 @@ class Push {
   /**
    * Keeps note of the register to push onto stack
    * @param {string} reg - The register to push onto the stack
+   * @constructor
    */
   constructor(reg) {
     this.reg = reg;
@@ -14,7 +15,7 @@ class Push {
    * Execute will push the value of the register specified in the constructor onto the stack.
    * @param {Object} currRegs - The current state of the registers
    * @param {Object} currFlags - The current state of the flags
-   * @param {Object} stack - The stack
+   * @param {Object} stack - The call stack
    * @returns {Object} current registers and current flags are returned unchanged
    */
   execute(currRegs, currFlags, stack) {
