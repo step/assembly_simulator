@@ -1,6 +1,7 @@
 class Stop {
-  execute(currRegs, currFlags) {
-    return { regs: currRegs, flags: currFlags, halt: true };
+  execute(currRegs, currFlags, stack, programCounter) {
+    programCounter.halt();
+    return { regs: currRegs, flags: currFlags };
   }
 }
 

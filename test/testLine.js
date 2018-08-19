@@ -22,8 +22,10 @@ describe('Line execute', function() {
       let line = Line.create(10, 'STOP');
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 0, NE: 0, GT: 0, LT: 0 };
-      let { currLine, regs, flags, halt } = line.execute(currRegs, currFlags);
-      assert.equal(true, halt);
+      let stack = new Stack();
+      let pc = new ProgramCounter(['10', '20', '30']);
+      let { regs, flags, currLine } = line.execute(currRegs, currFlags, stack, pc);
+      assert.equal(true, pc.shouldHalt());
       assert.equal(10, currLine);
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 0, NE: 0, GT: 0, LT: 0 }, flags);
