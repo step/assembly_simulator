@@ -33,7 +33,11 @@ class ProgramCounter {
    * @returns {string} The line number that is currently executing
    */
   getNextLineNumber() {
-    return this._halt ? ' ' : this._lineNumbers[this._nextIndex];
+    let nextLineNumber = this._lineNumbers[this._nextIndex];
+    if (this._halt || nextLineNumber == undefined) {
+      return ' ';
+    } 
+    return this._lineNumbers[this._nextIndex];
   }
 
   /**
@@ -76,7 +80,7 @@ class ProgramCounter {
   shouldHalt() {
     return (
       this._halt ||
-      !this._currentIndex ||
+      this._currentIndex == undefined ||
       this._currentIndex >= this._lineNumbers.length
     );
   }

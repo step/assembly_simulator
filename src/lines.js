@@ -1,3 +1,5 @@
+const ProgramCounter = require('./programCounter.js');
+
 class Lines {
   constructor() {
     this.lines = [];
@@ -17,21 +19,16 @@ class Lines {
   getStepWiseExecutor(initState, cb) {
     let { regs, flags, stack } = initState;
     let state = { regs, flags, halt: false };
-    let programCounter = 0;
+    let lineNumbers = this.lines.map((l)=>l.getLineNumber());
+    let programCounter = new ProgramCounter(lineNumbers);
     let executor = () => {
-      if (this.shouldExecute(programCounter, state.halt)) {
-        let line = this.lines[programCounter];
-        state = line.execute(state.regs, state.flags, stack);
-        programCounter++;
-        if (state.nextLine) programCounter = this.lineNumbers[state.nextLine];
-        else {
-          let lineToExecute = this.lines[programCounter];
-          state.nextLine = lineToExecute ? lineToExecute.getLineNumber() : ' ';
-        }
-        cb(state);
-        return true;
-      }
-      return false;
+      if(programCounter.shouldHalt()) return false;
+      let line = this.lines[programCounter.getCurrentLineIndex()];
+      state = line.execute(state.regs, state.flags, stack, programCounter);
+      state.nextLine = programCounter.getNextLineNumber();
+      programCounter.update();
+      cb(state);
+      return true;
     };
     return executor;
   }

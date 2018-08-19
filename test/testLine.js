@@ -1,5 +1,6 @@
 const Line = require('../src/line.js');
 const Stack = require('../src/stack.js');
+const ProgramCounter = require('../src/programCounter.js');
 const assert = require('assert');
 const InvalidInstructionException = require('../src/commands/invalidInstructionException.js');
 
@@ -182,12 +183,16 @@ describe('Line execute', function() {
       let line = Line.create(10, 'JMP', ['20']);
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 0, NE: 0, GT: 0, LT: 0 };
+      let stack = new Stack();
+      let pc = new ProgramCounter(['10','20']);
       let { currLine, regs, flags, nextLine } = line.execute(
         currRegs,
-        currFlags
+        currFlags,
+        stack,
+        pc
       );
       assert.equal(10, currLine);
-      assert.equal('20', nextLine);
+      assert.equal('20',pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 0, NE: 0, GT: 0, LT: 0 }, flags);
     });
@@ -290,12 +295,16 @@ describe('Line execute', function() {
       let line = Line.create(10, 'JLE', ['70']);
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 0, NE: 1, GT: 0, LT: 1 };
-      let { currLine, regs, flags, nextLine } = line.execute(
+      let stack = new Stack();
+      let pc = new ProgramCounter(['10','70']);
+      let { regs, flags } = line.execute(
         currRegs,
-        currFlags
+        currFlags,
+        stack,
+        pc
       );
-      assert.equal(10, currLine);
-      assert.equal('70', nextLine);
+      assert.equal(10, pc.getCurrentLineNumber());
+      assert.equal('70', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 0, NE: 1, GT: 0, LT: 1 }, flags);
     });
@@ -304,12 +313,16 @@ describe('Line execute', function() {
       let line = Line.create(10, 'JLE', ['70']);
       let currRegs = { A: 0, B: 0, C: 0, D: 0 };
       let currFlags = { EQ: 1, NE: 0, GT: 0, LT: 0 };
+      let stack = new Stack();
+      let pc = new ProgramCounter(['10','70']);
       let { currLine, regs, flags, nextLine } = line.execute(
         currRegs,
-        currFlags
+        currFlags,
+        stack,
+        pc
       );
-      assert.equal(10, currLine);
-      assert.equal('70', nextLine);
+      assert.equal(10, pc.getCurrentLineNumber());
+      assert.equal('70', pc.getNextLineNumber());
       assert.deepEqual({ A: 0, B: 0, C: 0, D: 0 }, regs);
       assert.deepEqual({ EQ: 1, NE: 0, GT: 0, LT: 0 }, flags);
     });

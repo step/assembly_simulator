@@ -101,4 +101,10 @@ describe('should halt', () => {
     pc.halt();
     assert.equal(true, pc.shouldHalt());
   });
+
+  it('should not halt on the first line', () => {
+    let lineNumbers = ['10', '20', '30'];
+    let pc = new ProgramCounter(lineNumbers);
+    assert.equal(false, pc.shouldHalt());
+  });
 });

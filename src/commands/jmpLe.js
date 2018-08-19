@@ -3,13 +3,12 @@ class JmpLe {
     this.lineNumber = lineNumber;
   }
 
-  execute(regs, flags) {
+  execute(regs, flags, stack, programCounter) {
     let { LT, EQ } = flags;
-    let nextLine = undefined;
     if (LT == 1 || EQ == 1) {
-      nextLine = this.lineNumber;
+      programCounter.setNextLine(this.lineNumber);
     }
-    return { regs, flags, nextLine };
+    return { regs, flags };
   }
 }
 

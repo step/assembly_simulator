@@ -3,8 +3,9 @@ class Jmp {
     this.lineNumber = lineNumber;
   }
 
-  execute(currRegs, currFlags) {
-    return { regs: currRegs, flags: currFlags, nextLine: this.lineNumber };
+  execute(currRegs, currFlags, stack, programCounter) {
+    programCounter.setNextLine(this.lineNumber);
+    return { regs: currRegs, flags: currFlags };
   }
 }
 

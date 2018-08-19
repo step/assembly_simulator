@@ -14,10 +14,10 @@ class Line {
     return this.lineNumber;
   }
 
-  execute(currRegs, currFlags, stack) {
+  execute(currRegs, currFlags, stack, programCounter) {
     let result;
     try {
-      result = this.command.execute(currRegs, currFlags, stack);
+      result = this.command.execute(currRegs, currFlags, stack, programCounter);
     } catch (error) {
       error.setLineNumber(this.lineNumber);
       error.setInstruction(this.instruction);
