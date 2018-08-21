@@ -25,6 +25,8 @@ class Call extends Command {
    */
   execute(regs, flags, stack, programCounter) {
     stack.push(programCounter.getNextLineNumber());
+    programCounter.setNextLineByName(this.fnName);
+    return { regs, flags };
   }
 }
 

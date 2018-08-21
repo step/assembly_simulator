@@ -22,6 +22,8 @@ const PrnReg = require('./prnReg.js');
 const Push = require('./push.js');
 const Pop = require('./pop.js');
 const Func = require('./func.js');
+const Call = require('./call.js');
+const Ret = require('./ret.js');
 
 const isRegister = arg => arg.toString().match(/^[ABCD]$/i);
 const isNumericalValue = arg => arg.toString().match(/^[0-9]+$/i);
@@ -140,6 +142,19 @@ factories.func = args => {
     throw new InvalidInstructionException();
 
   return new Func(args[0].toUpperCase());
+};
+
+factories.call = args => {
+  if (args.length != 1 || !isValidFunctionName(args[0]))
+    throw new InvalidInstructionException();
+
+  return new Call(args[0].toUpperCase());
+};
+
+factories.ret = args => {
+  if (args.length != 0) throw new InvalidInstructionException();
+
+  return new Ret();
 };
 
 module.exports = factories;

@@ -13,4 +13,14 @@ describe('Call execution', () => {
     call.execute(currRegs, currFlags, stack, pc);
     assert.deepEqual(['20'], stack.asArray());
   });
+
+  it('should modify the program counter to reflect the new line to jump to', () => {
+    let currFlags = { EQ: 0, NE: 0, LT: 0, GT: 0 };
+    let currRegs = { A: 0, B: 0, C: 0, D: 0 };
+    let stack = new Stack();
+    let pc = new ProgramCounter([10, 20, 30], { MUL: '30' });
+    let call = new Call('MUL');
+    call.execute(currRegs, currFlags, stack, pc);
+    assert.equal('30', pc.getNextLineNumber());
+  });
 });
