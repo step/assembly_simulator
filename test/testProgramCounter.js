@@ -76,6 +76,25 @@ describe('Program Counter get line', () => {
   });
 });
 
+describe('set next line number by name', () => {
+  it('should set the next line number by looking up a name', () => {
+    let lineNumbers = ['10', '20', '30', '40'];
+    let fnTable = { MUL: '30' };
+    let pc = new ProgramCounter(lineNumbers, fnTable);
+    assert.equal(10, pc.getCurrentLineNumber());
+    assert.equal(20, pc.getNextLineNumber());
+    pc.setNextLineByName('MUL');
+    assert.equal(30, pc.getNextLineNumber());
+  });
+
+  it('should throw an error if the function is not present in the table', () => {
+    let lineNumbers = ['10', '20', '30', '40'];
+    let fnTable = { MUL: '30' };
+    let pc = new ProgramCounter(lineNumbers, fnTable);
+    assert.throws(() => pc.setNextLineByName('does not exist'));
+  });
+});
+
 describe('should halt', () => {
   it('should decide to halt when the current line is illegal', () => {
     let lineNumbers = ['10', '20', '30', '40'];

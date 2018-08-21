@@ -3,9 +3,11 @@ const ProgramCounter = require('./programCounter.js');
 class Lines {
   constructor() {
     this.lines = [];
+    this.fnTable = {};
   }
 
   add(line) {
+    this.fnTable = line.populateFunctionTable(this.fnTable);
     this.lines.push(line);
   }
 

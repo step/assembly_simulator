@@ -15,7 +15,7 @@ class Line {
   }
 
   populateFunctionTable(fnTable) {
-    return this.command.populateFunctionTable(fnTable,this.lineNumber);
+    return this.command.populateFunctionTable(fnTable, this.lineNumber);
   }
 
   execute(currRegs, currFlags, stack, programCounter) {

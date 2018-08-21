@@ -6,7 +6,7 @@ const Command = require('./command.js');
 class Func extends Command {
   /**
    * Creates an instance of a function with the given name
-   * @param {string} fnName 
+   * @param {string} fnName
    * @constructor
    */
   constructor(fnName) {
@@ -16,10 +16,10 @@ class Func extends Command {
 
   /**
    * Populates the function table with the fnName and lineNumber provided.
-   * @param {Object} fnTable 
-   * @param {string} lineNumber 
+   * @param {Object} fnTable
+   * @param {string} lineNumber
    */
-  populateFunctionTable(fnTable,lineNumber) {
+  populateFunctionTable(fnTable, lineNumber) {
     let newEntry = {};
     newEntry[this.fnName] = lineNumber;
     return Object.assign(newEntry, fnTable);

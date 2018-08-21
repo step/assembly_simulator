@@ -1,6 +1,6 @@
 const Command = require('./command.js');
 
-class SubValFromReg extends Command{
+class SubValFromReg extends Command {
   constructor(lhs, rhs) {
     super();
     this.lhs = lhs;

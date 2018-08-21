@@ -26,7 +26,8 @@ const Func = require('./func.js');
 const isRegister = arg => arg.toString().match(/^[ABCD]$/i);
 const isNumericalValue = arg => arg.toString().match(/^[0-9]+$/i);
 const isStringLiteral = arg => arg.toString().match(/^".*"$/);
-const isValidFunctionName = arg => arg.toString().match(/^[a-zA-Z][a-zA-Z0-9]+$/);
+const isValidFunctionName = arg =>
+  arg.toString().match(/^[a-zA-Z][a-zA-Z0-9]+$/);
 const stripOuterQuotes = arg => arg.replace(/^"/, '').replace(/"$/, '');
 const factories = {};
 
@@ -139,6 +140,6 @@ factories.func = args => {
     throw new InvalidInstructionException();
 
   return new Func(args[0].toUpperCase());
-}
+};
 
 module.exports = factories;

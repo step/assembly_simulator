@@ -118,7 +118,7 @@ describe('Machine with stack', () => {
     assert.throws(() => machine.execute());
   });
 
-  it.skip('should clear the stack between multiple executions',() => {
+  it.skip('should clear the stack between multiple executions', () => {
     // Code
   });
 });
@@ -487,8 +487,8 @@ describe('Source mapping at the machine level', function() {
   });
 });
 
-describe.skip('Machine with functions',() => {
-  it('should execute a basic function',() => {
+describe.skip('Machine with functions', () => {
+  it('should execute a basic function', () => {
     const machine = new Machine();
     const program = [
       '10 START',
@@ -501,6 +501,6 @@ describe.skip('Machine with functions',() => {
     ];
     machine.load(stitch(program));
     machine.execute();
-    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 },machine.getRegs());
+    assert.deepEqual({ A: 10, B: 0, C: 0, D: 0 }, machine.getRegs());
   });
 });

@@ -580,19 +580,19 @@ describe('Line execute', function() {
     });
   });
 
-  describe('func',() => {
-    it('should execute a func instruction without changing flags,regs,stack',() => {
+  describe('func', () => {
+    it('should execute a func instruction without changing flags,regs,stack', () => {
       let line = Line.create(10, 'FUNC', ['MUL'], 1, '10 FUNC MUL');
       let currRegs = { A: 10, B: 20, C: 30, D: 40 };
       let currFlags = { EQ: 0, NE: 1, GT: 1, LT: 0 };
       let stack = new Stack();
-      let pc = new ProgramCounter([10,20]);
+      let pc = new ProgramCounter([10, 20]);
       let { regs, flags } = line.execute(currRegs, currFlags, stack, pc);
       assert.deepEqual({ A: 10, B: 20, C: 30, D: 40 }, regs);
       assert.deepEqual({ EQ: 0, NE: 1, GT: 1, LT: 0 }, flags);
     });
 
-    it('throw an error when FUNC has an invalid argument',() => {
+    it('throw an error when FUNC has an invalid argument', () => {
       assert.throws(
         () => Line.create(10, 'FUNC', []),
         InvalidInstructionException
@@ -623,11 +623,11 @@ describe('Source mapping', function() {
   });
 });
 
-describe('Populating function table',() => {
-  it('should populate the function table if the line is a function cmd',() => {
+describe('Populating function table', () => {
+  it('should populate the function table if the line is a function cmd', () => {
     let line = Line.create(10, 'FUNC', ['MUL'], 1, '10 FUNC MUL');
     let fnTable = {};
     let newFnTable = line.populateFunctionTable(fnTable);
-    assert.deepEqual({'MUL': '10'},newFnTable);
+    assert.deepEqual({ MUL: '10' }, newFnTable);
   });
 });
