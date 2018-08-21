@@ -1,5 +1,8 @@
-class JmpNe {
+const Command = require('./command.js');
+
+class JmpNe extends Command {
   constructor(lineNumber) {
+    super();
     this.lineNumber = lineNumber;
   }
 

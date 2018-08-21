@@ -1,5 +1,8 @@
-class JmpGe {
+const Command = require('./command.js');
+
+class JmpGe extends Command {
   constructor(lineNumber) {
+    super();
     this.lineNumber = lineNumber;
   }
 

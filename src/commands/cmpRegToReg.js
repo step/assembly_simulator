@@ -1,5 +1,8 @@
-class CmpRegToReg {
+const Command = require('./command.js');
+
+class CmpRegToReg extends Command {
   constructor(lhs, rhs) {
+    super();
     this.lhs = lhs;
     this.rhs = rhs;
   }

@@ -1,12 +1,15 @@
+const Command = require('./command.js');
+
 /**
  * The Pop command pops the stack and puts the popped value into the given register at execution time.
  */
-class Pop {
+class Pop extends Command {
   /**
    * Keeps note of the register to pop into from the stack
    * @param {string} reg - The register to push into
    */
   constructor(reg) {
+    super();
     this.reg = reg;
   }
 

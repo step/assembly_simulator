@@ -1,5 +1,8 @@
-class PrnLiteral {
+const Command = require('./command.js');
+
+class PrnLiteral extends Command {
   constructor(literal) {
+    super();
     this.literal = literal;
   }
 

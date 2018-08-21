@@ -14,6 +14,10 @@ class Line {
     return this.lineNumber;
   }
 
+  populateFunctionTable(fnTable) {
+    return this.command.populateFunctionTable(fnTable,this.lineNumber);
+  }
+
   execute(currRegs, currFlags, stack, programCounter) {
     let result;
     try {

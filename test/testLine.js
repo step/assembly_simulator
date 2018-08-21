@@ -622,3 +622,12 @@ describe('Source mapping', function() {
     assert.equal('10 START', instruction);
   });
 });
+
+describe('Populating function table',() => {
+  it('should populate the function table if the line is a function cmd',() => {
+    let line = Line.create(10, 'FUNC', ['MUL'], 1, '10 FUNC MUL');
+    let fnTable = {};
+    let newFnTable = line.populateFunctionTable(fnTable);
+    assert.deepEqual({'MUL': '10'},newFnTable);
+  });
+});

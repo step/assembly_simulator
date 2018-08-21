@@ -1,5 +1,8 @@
-class JmpEq {
+const Command = require('./command.js');
+
+class JmpEq extends Command {
   constructor(lineNumber) {
+    super();
     this.lineNumber = lineNumber;
   }
 

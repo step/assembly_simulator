@@ -1,13 +1,16 @@
+const Command = require('./command.js');
+
 /**
  * The Push command pushes a given register on to the stack at execution time.
  */
-class Push {
+class Push extends Command {
   /**
    * Keeps note of the register to push onto stack
    * @param {string} reg - The register to push onto the stack
    * @constructor
    */
   constructor(reg) {
+    super();
     this.reg = reg;
   }
 

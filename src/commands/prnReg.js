@@ -1,5 +1,8 @@
-class PrnReg {
+const Command = require('./command.js');
+
+class PrnReg extends Command {
   constructor(reg) {
+    super();
     this.reg = reg;
   }
 

@@ -15,13 +15,12 @@ class Lines {
     let lineNumbers = this.lines.map(l => l.getLineNumber());
     let programCounter = new ProgramCounter(lineNumbers);
     let executor = () => {
-      if (programCounter.shouldHalt()) return false;
       let line = this.lines[programCounter.getCurrentLineIndex()];
       state = line.execute(state.regs, state.flags, stack, programCounter);
       state.nextLine = programCounter.getNextLineNumber();
       programCounter.update();
       cb(state);
-      return true;
+      return !programCounter.shouldHalt();
     };
     return executor;
   }

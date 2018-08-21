@@ -15,4 +15,10 @@ describe('Func execution',() => {
     assert.deepEqual({ EQ: 0, NE: 1, LT: 0, GT: 1 }, flags);
     assert.deepEqual([], stack.asArray());
   });
+
+  it('should add itself to the function table on the given line number',() => {
+    let func = new Func('MUL');
+    let newFnTable = func.populateFunctionTable({},'10');
+    assert.deepEqual({'MUL': '10'}, newFnTable)
+  });
 });

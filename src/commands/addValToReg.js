@@ -1,5 +1,8 @@
-class AddValToReg {
+const Command = require('./command.js');
+
+class AddValToReg extends Command {
   constructor(lhs, rhs) {
+    super();
     this.lhs = lhs;
     this.rhs = rhs;
   }

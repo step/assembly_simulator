@@ -1,5 +1,8 @@
-class JmpLt {
+const Command = require('./command.js');
+
+class JmpLt extends Command {
   constructor(lineNumber) {
+    super();
     this.lineNumber = lineNumber;
   }
 

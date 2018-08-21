@@ -117,6 +117,10 @@ describe('Machine with stack', () => {
     machine.load(stitch(program));
     assert.throws(() => machine.execute());
   });
+
+  it.skip('should clear the stack between multiple executions',() => {
+    // Code
+  });
 });
 
 describe('Machine step wise execution', () => {
