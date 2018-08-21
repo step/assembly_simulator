@@ -607,6 +607,53 @@ describe('Line execute', function() {
       );
     });
   });
+
+  describe('call', () => {
+    it('should call the given function', () => {
+      let line = Line.create(10, 'CALL', ['MUL'], 1, '10 CALL MUL');
+      let currRegs = { A: 10, B: 20, C: 30, D: 40 };
+      let currFlags = { EQ: 0, NE: 1, GT: 1, LT: 0 };
+      let stack = new Stack();
+      let pc = new ProgramCounter([10, 20, 30], { MUL: '30' });
+      let { regs, flags } = line.execute(currRegs, currFlags, stack, pc);
+      assert.equal(30, pc.getNextLineNumber());
+    });
+
+    it('should throw an error when there are illegal arguments', () => {
+      assert.throws(
+        () => Line.create(10, 'CALL', [], 1, '10 CALL'),
+        InvalidInstructionException
+      );
+      assert.throws(
+        () => Line.create(10, 'CALL', ['1ABC'], 1, '10 CALL'),
+        InvalidInstructionException
+      );
+      assert.throws(
+        () => Line.create(10, 'CALL', ['ABC', 'DEF'], 1, '10 CALL'),
+        InvalidInstructionException
+      );
+    });
+  });
+
+  describe('ret', () => {
+    it('should return to the next line contained in the stack', () => {
+      let line = Line.create(50, 'RET', [], 5, '50 RET');
+      let currRegs = { A: 10, B: 20, C: 30, D: 40 };
+      let currFlags = { EQ: 0, NE: 1, GT: 1, LT: 0 };
+      let stack = new Stack();
+      stack.push(['30']);
+      let pc = new ProgramCounter([10, 20, 30, 40, 50], { MUL: '40' });
+      let { regs, flags } = line.execute(currRegs, currFlags, stack, pc);
+      assert.equal(30, pc.getNextLineNumber());
+    });
+
+    it('should throw an error when there are illegal arguments', () => {
+      assert.throws(
+        () => Line.create(10, 'RET', ['20'], 1, '10 RET 20'),
+        InvalidInstructionException
+      );
+    });
+  });
 });
 
 describe('Source mapping', function() {
