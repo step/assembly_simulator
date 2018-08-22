@@ -118,8 +118,19 @@ describe('Machine with stack', () => {
     assert.throws(() => machine.execute());
   });
 
-  it.skip('should clear the stack between multiple executions', () => {
-    // Code
+  it('should clear the stack between multiple executions', () => {
+    const machine = new Machine();
+    const program = [
+      '10 START',
+      '20 MOV A, 5',
+      '30 PUSH A',
+      '40 STOP'
+    ];
+    machine.load(stitch(program));
+    machine.execute();
+    assert.deepEqual([5],machine.getStack());
+    machine.execute();
+    assert.deepEqual([5],machine.getStack());
   });
 });
 

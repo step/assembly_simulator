@@ -35,4 +35,12 @@ describe('Stack ', () => {
     let stack = new Stack();
     assert.throws(() => stack.pop());
   });
+
+  it('should clear the stack',() => {
+    let stack = new Stack();
+    stack.push(5);
+    assert.deepEqual([5], stack.asArray());
+    stack.clear();
+    assert.deepEqual([], stack.asArray());
+  });
 });

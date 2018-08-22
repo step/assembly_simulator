@@ -8,7 +8,7 @@ class Stack {
    * @constructor
    */
   constructor() {
-    this.stack = [];
+    this._stack = [];
   }
 
   /**
@@ -16,7 +16,7 @@ class Stack {
    * @param {number} value - The value to be pushed onto a stack.
    */
   push(value) {
-    this.stack.push(value);
+    this._stack.push(value);
   }
 
   /**
@@ -25,8 +25,8 @@ class Stack {
    * @throws {StackUnderflowException} Will throw an error if you try to pop an empty stack
    */
   pop() {
-    if (this.stack.length == 0) throw new StackUnderflowException();
-    return this.stack.pop();
+    if (this._stack.length == 0) throw new StackUnderflowException();
+    return this._stack.pop();
   }
 
   /**
@@ -34,7 +34,11 @@ class Stack {
    * @returns {number[]} The stack represented as an array with the last number pushed at the tail of the array and the first number pushed at the head of the array.
    */
   asArray() {
-    return this.stack.map(a => a);
+    return this._stack.map(a => a);
+  }
+
+  clear() {
+    this._stack = [];
   }
 }
 

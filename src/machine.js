@@ -5,14 +5,15 @@ const Lines = require('./lines.js');
 
 class Machine {
   constructor() {
-    this._reset();
     this.lines = new Lines();
     this.stack = new Stack();
+    this._reset();
   }
 
   _reset() {
     this._resetRegisters();
     this._resetFlags();
+    this.stack.clear();
     this.prn = [];
     this.table = [];
   }
