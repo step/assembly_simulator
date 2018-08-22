@@ -406,6 +406,7 @@ There is also a stack that you can `PUSH` and `POP` from.
    3. Print output from the `PRN` instruction.
    4. The line number from the source file or program that was executed in `SL`
    5. The actual instruction being executed in `INST`
+   6. The stack as an array contained in `STK`
 
    
 #### Stepwise Execution
@@ -421,11 +422,13 @@ let callBack = (state) => {
   let { PRN } = state;
   let { CL, NL } = state;
   let { SL, INST } = state;
+  let { STK } = state;
   console.log(`A : ${A}, B : ${B}, C : ${C}, D : ${D}`);
   console.log(`EQ : ${EQ}, NE : ${NE}, GT : ${GT}, LT : ${LT}`);
   console.log(`CL : ${CL}, NL : ${NL}`);
   console.log(`SL : ${SL}, INST : ${INST}`);
   console.log(`INST : ${INST}`);
+  console.log(`STK : ${STK.join(" ")}`);
 } 
 let executor;
 try {
