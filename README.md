@@ -43,6 +43,8 @@ There are 4 flags that are set on the compare instruction.
 
 The "Machine" only recognises positive integers for now.
 
+There is also a stack that you can `PUSH` and `POP` from.
+
 ### Instruction Set
 
 0. **Comments**
@@ -258,6 +260,100 @@ The "Machine" only recognises positive integers for now.
    ```
    100 STOP 10
    100 STOP A
+   ```
+
+14. **PUSH**
+   
+   The `PUSH` instruction pushes the value of a register onto the stack. It takes exactly one argument that has to be a register.
+
+   Valid uses
+   ```
+   10 PUSH A
+   20 PUSH B
+   ```
+
+   Invalid uses
+   ```
+   10 PUSH
+   20 PUSH 20
+   30 PUSH A,B
+   ```
+
+15. **POP**
+   
+   The `POP` instruction pops the stack into the register specified. It takes exactly one argument that has to be a register.
+
+   Valid uses
+   ```
+   10 POP A
+   20 POP B
+   ```
+
+   Invalid uses
+   ```
+   10 POP
+   20 POP 20
+   30 POP A,B
+   ```
+
+16. **FUNC**
+
+   The `FUNC` instruction is a special instruction. It has no effect on execution and leaves flags and registers unchanged. It is used to indicate the beginning of a function. It takes one argument that has to be a valid function name.
+
+   A valid function name begins with an alphabet but can consequently contain alphabets or numbers.
+
+   Function names are case insensitive. So, `mul` is the same as `MUL`. 
+
+   The `RET` instruction is used to return to the point of execution from where the previous call was invoked.
+
+   Valid uses
+
+   ```
+   10 FUNC MUL
+   20 ADD A,A
+   30 RET
+   ```
+
+   Invalid uses
+
+   ```
+   10 FUNC 1MUL
+   20 FUNC "ABCD"
+   30 FUNC A,B
+   ```
+
+17. **CALL**
+
+   The `CALL` instruction calls the given function. It takes exactly one argument which has to be a valid function name.
+
+   A valid function name begins with an alphabet but can consequently contain alphabets or numbers.
+
+   Valid uses
+   ```
+   70 CALL MUL
+   80 CALL GREATEST
+   ```
+
+   Invalid uses
+   ```
+   70 CALL 
+   80 CALL 1MUL
+   ```
+
+18. **RET**
+
+   The `RET` instruction is used to return to the point of execution from where `CALL` was last called from. `RET` is usually the last instruction executed in a function. The instruction accepts no arguments.
+
+   Valid uses
+   ```
+   30 RET
+   ```
+
+   Invalid uses
+   ```
+   30 RET A
+   40 RET 20
+   50 RET "ABC"
    ```
 
 ### Documentation
