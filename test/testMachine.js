@@ -460,6 +460,153 @@ describe('Machine state table', function() {
     machine.execute();
     assert.deepEqual(expectedTable, machine.getTable());
   });
+
+  it('should reflect the state of the stack for each executed line',() => {
+    const machine = new Machine();
+    const program = [
+      '10 START',
+      '20 MOV A,10',
+      '30 PUSH A',
+      '40 MOV B,20',
+      '50 PUSH B',
+      '60 POP A',
+      '70 POP B',
+      '80 STOP'
+    ];
+    let expectedTable = [
+      {
+        A: 0,
+        B: 0,
+        C: 0,
+        D: 0,
+        CL: 10,
+        NL: 20,
+        EQ: 0,
+        NE: 0,
+        GT: 0,
+        LT: 0,
+        PRN: undefined,
+        SL: 1,
+        INST: '10 START',
+        STK: []
+      },
+      {
+        A: 10,
+        B: 0,
+        C: 0,
+        D: 0,
+        CL: 20,
+        NL: 30,
+        EQ: 0,
+        NE: 0,
+        GT: 0,
+        LT: 0,
+        PRN: undefined,
+        SL: 2,
+        INST: '20 MOV A,10',
+        STK: []
+      },
+      {
+        A: 10,
+        B: 0,
+        C: 0,
+        D: 0,
+        CL: 30,
+        NL: 40,
+        EQ: 0,
+        NE: 0,
+        GT: 0,
+        LT: 0,
+        PRN: undefined,
+        SL: 3,
+        INST: '30 PUSH A',
+        STK: [10]
+      },
+      {
+        A: 10,
+        B: 20,
+        C: 0,
+        D: 0,
+        CL: 40,
+        NL: 50,
+        EQ: 0,
+        NE: 0,
+        GT: 0,
+        LT: 0,
+        PRN: undefined,
+        SL: 4,
+        INST: '40 MOV B,20',
+        STK: [10]
+      },
+      {
+        A: 10,
+        B: 20,
+        C: 0,
+        D: 0,
+        CL: 50,
+        NL: 60,
+        EQ: 0,
+        NE: 0,
+        GT: 0,
+        LT: 0,
+        PRN: undefined,
+        SL: 5,
+        INST: '50 PUSH B',
+        STK: [10,20]
+      },
+      {
+        A: 20,
+        B: 20,
+        C: 0,
+        D: 0,
+        CL: 60,
+        NL: 70,
+        EQ: 0,
+        NE: 0,
+        GT: 0,
+        LT: 0,
+        PRN: undefined,
+        SL: 6,
+        INST: '60 POP A',
+        STK: [10]
+      },
+      {
+        A: 20,
+        B: 10,
+        C: 0,
+        D: 0,
+        CL: 70,
+        NL: 80,
+        EQ: 0,
+        NE: 0,
+        GT: 0,
+        LT: 0,
+        PRN: undefined,
+        SL: 7,
+        INST: '70 POP B',
+        STK: []
+      },
+      {
+        A: 20,
+        B: 10,
+        C: 0,
+        D: 0,
+        CL: 80,
+        NL: ' ',
+        EQ: 0,
+        NE: 0,
+        GT: 0,
+        LT: 0,
+        PRN: undefined,
+        SL: 8,
+        INST: '80 STOP',
+        STK: []
+      },
+    ];
+    machine.load(stitch(program));
+    machine.execute();
+    assert.deepEqual(expectedTable, machine.getTable());
+  });
 });
 
 describe('Error reporting while loading', function() {
