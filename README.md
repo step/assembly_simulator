@@ -13,6 +13,7 @@ This project is a small simulator that combines BASIC like line numbers and asse
 4. [Instruction Set](#instruction-set)
 5. [Documentation](#documentation)
 6. [Error Handling](#error-handling)
+
 ### Installation
 
 `npm install https://github.com/step/assembly_simulator.git`
@@ -406,20 +407,60 @@ There is also a stack that you can `PUSH` and `POP` from.
    4. The line number from the source file or program that was executed in `SL`
    5. The actual instruction being executed in `INST`
 
+   
+#### Stepwise Execution
+
+The Machine has the capability of executing stepwise. This feature allows one to 'step through' the program. 
+
+```javascript
+const machine = new Machine();
+let program = fs.readFileSync("add.asm","utf8");
+let callBack = (state) => {
+  let { A, B, C, D } = state;
+  let { EQ, NE, GT, LT } = state;
+  let { PRN } = state;
+  let { CL, NL } = state;
+  let { SL, INST } = state;
+  console.log(`A : ${A}, B : ${B}, C : ${C}, D : ${D}`);
+  console.log(`EQ : ${EQ}, NE : ${NE}, GT : ${GT}, LT : ${LT}`);
+  console.log(`CL : ${CL}, NL : ${NL}`);
+  console.log(`SL : ${SL}, INST : ${INST}`);
+  console.log(`INST : ${INST}`);
+} 
+let executor;
+try {
+  machine.load(program);
+  executor = machine.executeStepWise();
+} catch(e) {
+  console.log("Error on ", e.lineNumber, e.instruction);
+}
+
+try {
+  machine.nextStep();
+  machine.nextStep();
+} catch(e) {
+  // do whatever with the error
+}
+```
+
+As shown above, in order to use it, you are required to pass a callback. The callback will be called with the same fields that `getTable` fetches. The important thing to note here is that once the machine executes the program completely, the callback will no longer be called no matter how many times you call `nextStep`.
+
+This manner of execution is very useful to debug things like infinite loops.
+
 ### Error Handling
 
-   All errors currently are encapsulated by the `InvalidInstructionException` class. All exceptions have two pieces of information currently.
+All errors currently are encapsulated by the `InvalidInstructionException` class. All exceptions have two pieces of information currently.
 
-   1. Source line number where the exception occurred in `lineNumber`
-   2. The offending instruction in `instruction`
+1. Source line number where the exception occurred in `lineNumber`
+2. The offending instruction in `instruction`
 
-   Always surround your machine's `load` and `execute` in try catch blocks.
+Always surround your machine's `load` and `execute` in try catch blocks.
 
-   ```javascript
-   try {
-     machine.load(program);
-     machine.execute();
-   } catch(e) {
-     console.log("Error on ", e.lineNumber, e.instruction);
-   }
-   ```
+```javascript
+try {
+  machine.load(program);
+  machine.execute();
+} catch(e) {
+  console.log("Error on ", e.lineNumber, e.instruction);
+}
+```

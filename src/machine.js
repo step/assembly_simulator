@@ -69,7 +69,7 @@ class Machine {
     return this.stack.asArray();
   }
 
-  _addToTable({ regs, flags, nextLine, currLine, prn, srcLine, instruction }) {
+  _toRow({ regs, flags, nextLine, currLine, prn, srcLine, instruction }) {
     let { A, B, C, D } = regs;
     let { EQ, NE, GT, LT } = flags;
     let row = {
@@ -87,7 +87,11 @@ class Machine {
       SL: srcLine,
       INST: instruction
     };
-    this.table.push(row);
+    return row;
+  }
+
+  _addToTable(state) {
+    this.table.push(this._toRow(state));
   }
 
   getTable() {
@@ -139,7 +143,7 @@ class Machine {
     this._reset();
     let wrappedCb = state => {
       this._updateCurrentExecState(state);
-      cb(state);
+      cb(this._toRow(state));
     };
     let regs = this.getRegs();
     let flags = this.getFlags();

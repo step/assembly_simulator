@@ -15,7 +15,6 @@ class Lines {
     let { regs, flags, stack } = initState;
     let state = { regs, flags, halt: false };
     let lineNumbers = this.lines.map(l => l.getLineNumber());
-    console.log(this.fnTable);
     let programCounter = new ProgramCounter(lineNumbers, this.fnTable);
     let executor = () => {
       let line = this.lines[programCounter.getCurrentLineIndex()];

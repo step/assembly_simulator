@@ -128,8 +128,7 @@ describe('Machine step wise execution', () => {
     const machine = new Machine();
     const program = ['10 START', '30 MOV A,10', '40 STOP'];
     let actualRegs = {};
-    const cb = state => {
-      let { A, B, C, D } = state.regs;
+    const cb = ({ A, B, C, D}) => {
       actualRegs = { A, B, C, D };
     };
     machine.load(stitch(program));
@@ -146,11 +145,10 @@ describe('Machine step wise execution', () => {
     const machine = new Machine();
     const program = ['10 START', '30 JMP 50', '40 MOV A,10', '50 STOP'];
     let actualCurrLine, actualNextLine, actualRegs;
-    const cb = ({ nextLine, currLine, regs }) => {
-      let { A, B, C, D } = regs;
+    const cb = ({ NL, CL, A, B, C, D }) => {
       actualRegs = { A, B, C, D };
-      actualCurrLine = currLine;
-      actualNextLine = nextLine;
+      actualCurrLine = CL;
+      actualNextLine = NL;
     };
     machine.load(stitch(program));
     machine.executeStepWise(cb);
@@ -179,7 +177,7 @@ describe('Machine step wise execution', () => {
       '60 STOP'
     ];
     let actualFlags;
-    let cb = ({ flags }) => (actualFlags = flags);
+    let cb = ({ EQ, NE, GT, LT }) => (actualFlags = { EQ, NE, GT, LT});
     machine.load(stitch(program));
     machine.executeStepWise(cb);
     machine.nextStep();
