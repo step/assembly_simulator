@@ -177,6 +177,23 @@ describe('Machine step wise execution', () => {
     assert.equal(' ', actualNextLine);
   });
 
+  it('should provide the stack as a part of the callback',() => {
+    const machine = new Machine();
+    const program = ['10 START', '20 MOV A,10', '40 PUSH A', '50 STOP'];
+    let stack = [];
+    const cb = ({ STK }) => {
+      stack = STK;
+    };
+    machine.load(stitch(program));
+    machine.executeStepWise(cb);
+    machine.nextStep();
+    assert.deepEqual([], stack);
+    machine.nextStep();
+    assert.deepEqual([], stack);
+    machine.nextStep();
+    assert.deepEqual([10], stack);
+  });
+
   it('should execute a program with compare statements step wise', () => {
     const machine = new Machine();
     const program = [
@@ -248,7 +265,8 @@ describe('Machine state table', function() {
         LT: 0,
         PRN: undefined,
         SL: 1,
-        INST: '10 START'
+        INST: '10 START',
+        STK: []
       },
       {
         A: 10,
@@ -263,7 +281,8 @@ describe('Machine state table', function() {
         LT: 0,
         PRN: undefined,
         SL: 2,
-        INST: '20 MOV A,10'
+        INST: '20 MOV A,10',
+        STK: []
       },
       {
         A: 10,
@@ -278,7 +297,8 @@ describe('Machine state table', function() {
         LT: 0,
         PRN: undefined,
         SL: 3,
-        INST: '30 STOP'
+        INST: '30 STOP',
+        STK: []
       }
     ];
     machine.load(stitch(program));
@@ -303,7 +323,8 @@ describe('Machine state table', function() {
         LT: 0,
         PRN: undefined,
         SL: 1,
-        INST: '10 START'
+        INST: '10 START',
+        STK: []
       },
       {
         A: 0,
@@ -318,7 +339,8 @@ describe('Machine state table', function() {
         LT: 0,
         PRN: undefined,
         SL: 2,
-        INST: '20 JMP 40'
+        INST: '20 JMP 40',
+        STK: []
       },
       {
         A: 0,
@@ -333,7 +355,8 @@ describe('Machine state table', function() {
         LT: 0,
         PRN: undefined,
         SL: 4,
-        INST: '40 STOP'
+        INST: '40 STOP',
+        STK: []
       }
     ];
     machine.load(stitch(program));
@@ -365,7 +388,8 @@ describe('Machine state table', function() {
         LT: 0,
         PRN: undefined,
         SL: 1,
-        INST: '10 START'
+        INST: '10 START',
+        STK: []
       },
       {
         A: 0,
@@ -380,7 +404,8 @@ describe('Machine state table', function() {
         LT: 1,
         PRN: undefined,
         SL: 2,
-        INST: '20 CMP A,10'
+        INST: '20 CMP A,10',
+        STK: []
       },
       {
         A: 0,
@@ -395,7 +420,8 @@ describe('Machine state table', function() {
         LT: 1,
         PRN: undefined,
         SL: 3,
-        INST: '30 JLE 50'
+        INST: '30 JLE 50',
+        STK: []
       },
       {
         A: 20,
@@ -410,7 +436,8 @@ describe('Machine state table', function() {
         LT: 1,
         PRN: undefined,
         SL: 5,
-        INST: '50 MOV A,20'
+        INST: '50 MOV A,20',
+        STK: []
       },
       {
         A: 20,
@@ -425,7 +452,8 @@ describe('Machine state table', function() {
         LT: 1,
         PRN: undefined,
         SL: 6,
-        INST: '60 STOP'
+        INST: '60 STOP',
+        STK: []
       }
     ];
     machine.load(stitch(program));

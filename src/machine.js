@@ -86,7 +86,8 @@ class Machine {
       NL: nextLine,
       PRN: prn,
       SL: srcLine,
-      INST: instruction
+      INST: instruction,
+      STK: this.getStack()
     };
     return row;
   }
