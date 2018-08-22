@@ -120,17 +120,12 @@ describe('Machine with stack', () => {
 
   it('should clear the stack between multiple executions', () => {
     const machine = new Machine();
-    const program = [
-      '10 START',
-      '20 MOV A, 5',
-      '30 PUSH A',
-      '40 STOP'
-    ];
+    const program = ['10 START', '20 MOV A, 5', '30 PUSH A', '40 STOP'];
     machine.load(stitch(program));
     machine.execute();
-    assert.deepEqual([5],machine.getStack());
+    assert.deepEqual([5], machine.getStack());
     machine.execute();
-    assert.deepEqual([5],machine.getStack());
+    assert.deepEqual([5], machine.getStack());
   });
 });
 
@@ -139,7 +134,7 @@ describe('Machine step wise execution', () => {
     const machine = new Machine();
     const program = ['10 START', '30 MOV A,10', '40 STOP'];
     let actualRegs = {};
-    const cb = ({ A, B, C, D}) => {
+    const cb = ({ A, B, C, D }) => {
       actualRegs = { A, B, C, D };
     };
     machine.load(stitch(program));
@@ -177,7 +172,7 @@ describe('Machine step wise execution', () => {
     assert.equal(' ', actualNextLine);
   });
 
-  it('should provide the stack as a part of the callback',() => {
+  it('should provide the stack as a part of the callback', () => {
     const machine = new Machine();
     const program = ['10 START', '20 MOV A,10', '40 PUSH A', '50 STOP'];
     let stack = [];
@@ -205,7 +200,7 @@ describe('Machine step wise execution', () => {
       '60 STOP'
     ];
     let actualFlags;
-    let cb = ({ EQ, NE, GT, LT }) => (actualFlags = { EQ, NE, GT, LT});
+    let cb = ({ EQ, NE, GT, LT }) => (actualFlags = { EQ, NE, GT, LT });
     machine.load(stitch(program));
     machine.executeStepWise(cb);
     machine.nextStep();
@@ -461,7 +456,7 @@ describe('Machine state table', function() {
     assert.deepEqual(expectedTable, machine.getTable());
   });
 
-  it('should reflect the state of the stack for each executed line',() => {
+  it('should reflect the state of the stack for each executed line', () => {
     const machine = new Machine();
     const program = [
       '10 START',
@@ -552,7 +547,7 @@ describe('Machine state table', function() {
         PRN: undefined,
         SL: 5,
         INST: '50 PUSH B',
-        STK: [10,20]
+        STK: [10, 20]
       },
       {
         A: 20,
@@ -601,7 +596,7 @@ describe('Machine state table', function() {
         SL: 8,
         INST: '80 STOP',
         STK: []
-      },
+      }
     ];
     machine.load(stitch(program));
     machine.execute();
