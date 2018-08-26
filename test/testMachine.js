@@ -17,6 +17,14 @@ describe('Machine loading', function() {
     const program = ['10 STAR'];
     assert.throws(() => machine.load(stitch(program)));
   });
+  
+  it('should throw an exception when there is a parse error in the arguments',() => {
+    const machine = new Machine();
+    const missingArgumentProg = ['10 MOV A,'];
+    const missingQuoteProg = ['10 PRN "HELLO'];
+    assert.throws(() => machine.load(stitch(missingArgumentProg)), InvalidInstructionException);
+    assert.throws(() => machine.load(stitch(missingQuoteProg)), InvalidInstructionException);
+  });
 
   it('should ignore empty lines', function() {
     const machine = new Machine();

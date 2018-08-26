@@ -71,5 +71,6 @@ describe('should not parse illegal forms', function() {
     assert.throws(() => parse('10 ADD A,-2'), InvalidInstructionException);
     assert.throws(() => parse('10 ADD A -2'), InvalidInstructionException);
     assert.throws(() => parse('-10 ADD A -2'), InvalidInstructionException);
+    assert.throws(() => parse('10 MOV A,'), InvalidInstructionException);
   });
 });
