@@ -3,6 +3,7 @@ const Machine = require('../src/machine.js');
 const InvalidInstructionException = require('../src/commands/invalidInstructionException.js');
 const StackUnderFlowException = require('../src/stackUnderflowException.js');
 const StackOverflowException = require('../src/stackOverflowException.js');
+const MaximumInstructionsException = require('../src/maximumInstructionsException.js');
 
 const stitch = lines => lines.join('\n');
 
@@ -703,5 +704,39 @@ describe('Machine with functions', () => {
     machine.load(stitch(program));
     machine.execute();
     assert.deepEqual({ A: 30, B: 0, C: 0, D: 0 }, machine.getRegs());
+  });
+});
+
+describe('Machine with program counter limit', () => {
+  //// TODO: Have to check line number and instruction is being set or not
+  it('should throw when program counter exceeds limit ', () => {
+    const machine = new Machine(128,1);
+    const program = [
+      '10 START',
+      '20 STOP'
+    ];
+    machine.load(stitch(program));
+    assert.throws(()=>{machine.execute()},
+      function (err) {
+        if (err instanceof MaximumInstructionsException) {
+          return true;
+        }
+      });
+  });
+
+  it('should have program counter limit 1000 by default', () => {
+    const machine = new Machine();
+    let program = ['0 START'];
+    for (var i = 1; i < 1000 ; i++) {
+      program.push(`${i} MOV A,1`);
+    }
+    program.push('1001 STOP');
+    machine.load(stitch(program));
+    assert.throws(()=>{machine.execute()},
+      function (err) {
+        if (err instanceof MaximumInstructionsException) {
+          return true;
+        }
+      });
   });
 });

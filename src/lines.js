@@ -11,15 +11,21 @@ class Lines {
     this.lines.push(line);
   }
 
-  getStepWiseExecutor(initState, cb) {
+  getStepWiseExecutor(initState, cb, programCounterLimit) {
     let { regs, flags, stack } = initState;
     let state = { regs, flags, halt: false };
     let lineNumbers = this.lines.map(l => l.getLineNumber());
-    let programCounter = new ProgramCounter(lineNumbers, this.fnTable);
+    let programCounter = new ProgramCounter(lineNumbers, this.fnTable, programCounterLimit);
     let executor = () => {
-      let line = this.lines[programCounter.getCurrentLineIndex()];
+      let currentLineIndex = programCounter.getCurrentLineIndex();
+      let line = this.lines[currentLineIndex];
       state = line.execute(state.regs, state.flags, stack, programCounter);
-      state.nextLine = programCounter.getNextLineNumber();
+      try {
+        state.nextLine = programCounter.getNextLineNumber();
+      } catch (e) {
+        e.setInstruction(this.lines[currentLineIndex + 1]);
+        throw e;
+      }
       programCounter.update();
       cb(state);
       return !programCounter.shouldHalt();
@@ -27,8 +33,8 @@ class Lines {
     return executor;
   }
 
-  execute(initState, cb) {
-    let executor = this.getStepWiseExecutor(initState, cb);
+  execute(initState, cb, programCounterLimit) {
+    let executor = this.getStepWiseExecutor(initState, cb, programCounterLimit);
     while (executor()) {}
   }
 }
