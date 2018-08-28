@@ -4,9 +4,9 @@ const Stack = require('./stack.js');
 const Lines = require('./lines.js');
 
 class Machine {
-  constructor() {
+  constructor(stackSize) {
     this.lines = new Lines();
-    this.stack = new Stack();
+    this.stack = new Stack(stackSize);
     this._reset();
   }
 

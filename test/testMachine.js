@@ -2,6 +2,7 @@ const assert = require('assert');
 const Machine = require('../src/machine.js');
 const InvalidInstructionException = require('../src/commands/invalidInstructionException.js');
 const StackUnderFlowException = require('../src/stackUnderflowException.js');
+const StackOverflowException = require('../src/stackOverflowException.js');
 
 const stitch = lines => lines.join('\n');
 
@@ -17,7 +18,7 @@ describe('Machine loading', function() {
     const program = ['10 STAR'];
     assert.throws(() => machine.load(stitch(program)));
   });
-  
+
   it('should throw an exception when there is a parse error in the arguments',() => {
     const machine = new Machine();
     const missingArgumentProg = ['10 MOV A,'];
@@ -124,6 +125,18 @@ describe('Machine with stack', () => {
     const program = ['10 START', '30 POP B', '50 STOP'];
     machine.load(stitch(program));
     assert.throws(() => machine.execute());
+  });
+
+  it('should throw an exception when it tries to push when stack is full', () => {
+    const machine = new Machine(0);
+    const program = ['10 START', '30 PUSH B', '50 STOP'];
+    machine.load(stitch(program));
+    assert.throws(() => machine.execute(),
+      function (err) {
+        if (err instanceof StackOverflowException) {
+          return true;
+        }
+      });
   });
 
   it('should clear the stack between multiple executions', () => {

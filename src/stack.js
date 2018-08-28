@@ -1,4 +1,5 @@
 const StackUnderflowException = require('./stackUnderflowException.js');
+const StackOverflowException = require('./stackOverflowException.js');
 /**
  * A simple Stack representation that Machine will use to keep track of a call stack
  */
@@ -7,7 +8,8 @@ class Stack {
    * Initialises a stack
    * @constructor
    */
-  constructor() {
+  constructor(stackSize = 128) {
+    this._stackSize = stackSize;
     this._stack = [];
   }
 
@@ -16,6 +18,7 @@ class Stack {
    * @param {number} value - The value to be pushed onto a stack.
    */
   push(value) {
+    if (this._stack.length == this._stackSize) throw new StackOverflowException();
     this._stack.push(value);
   }
 

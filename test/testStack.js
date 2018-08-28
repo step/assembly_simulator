@@ -1,6 +1,7 @@
 const assert = require('assert');
 const Stack = require('../src/stack.js');
 const StackUnderflowException = require('../src/stackUnderflowException.js');
+const StackOverflowException = require('../src/stackOverflowException.js');
 
 describe('Stack ', () => {
   it('should be able to push a value on to a stack', () => {
@@ -43,4 +44,27 @@ describe('Stack ', () => {
     stack.clear();
     assert.deepEqual([], stack.asArray());
   });
+
+  it('should push only till stack limit', () => {
+    let stack = new Stack(1);
+    stack.push(5);
+    assert.throws(() => stack.push(1),
+      function(err) {
+        if(err instanceof StackOverflowException)
+          return true;
+      });
+  });
+
+  it('should take 128 as default stack limit', () => {
+    let stack = new Stack();
+    for (var i = 0; i < 128; i++) {
+      stack.push(5);
+    }
+    assert.throws(() => stack.push(1),
+      function(err) {
+        if(err instanceof StackOverflowException)
+          return true;
+      });
+  });
+
 });
