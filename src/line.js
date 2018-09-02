@@ -1,5 +1,6 @@
 const factories = require('./commands/commandFactories.js');
 const InvalidInstructionException = require('./commands/invalidInstructionException.js');
+
 const lib = {};
 
 class Line {

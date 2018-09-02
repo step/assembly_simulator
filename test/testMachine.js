@@ -2,6 +2,8 @@ const assert = require('assert');
 const Machine = require('../src/machine.js');
 const InvalidInstructionException = require('../src/commands/invalidInstructionException.js');
 const StackUnderFlowException = require('../src/stackUnderflowException.js');
+const StackOverflowException = require('../src/stackOverflowException.js');
+const MaximumInstructionsException = require('../src/maximumInstructionsException.js');
 
 const stitch = lines => lines.join('\n');
 
@@ -17,7 +19,7 @@ describe('Machine loading', function() {
     const program = ['10 STAR'];
     assert.throws(() => machine.load(stitch(program)));
   });
-  
+
   it('should throw an exception when there is a parse error in the arguments',() => {
     const machine = new Machine();
     const missingArgumentProg = ['10 MOV A,'];
@@ -124,6 +126,18 @@ describe('Machine with stack', () => {
     const program = ['10 START', '30 POP B', '50 STOP'];
     machine.load(stitch(program));
     assert.throws(() => machine.execute());
+  });
+
+  it('should throw an exception when it tries to push when stack is full', () => {
+    const machine = new Machine(0);
+    const program = ['10 START', '30 PUSH B', '50 STOP'];
+    machine.load(stitch(program));
+    assert.throws(() => machine.execute(),
+      function (err) {
+        if (err instanceof StackOverflowException) {
+          return true;
+        }
+      });
   });
 
   it('should clear the stack between multiple executions', () => {
@@ -690,5 +704,61 @@ describe('Machine with functions', () => {
     machine.load(stitch(program));
     machine.execute();
     assert.deepEqual({ A: 30, B: 0, C: 0, D: 0 }, machine.getRegs());
+  });
+});
+
+describe('Machine with program counter limit', () => {
+  it('should throw when program counter exceeds limit ', () => {
+    const machine = new Machine(128,1);
+    const program = [
+      '10 START',
+      '20 STOP'
+    ];
+    machine.load(stitch(program));
+    assert.throws(()=>{machine.execute()},
+      function (err) {
+        if (err instanceof MaximumInstructionsException) {
+          return true;
+        }
+      });
+  });
+
+  it('should have program counter limit 1000 by default', () => {
+    const machine = new Machine();
+    let program = ['0 START'];
+    for (var i = 1; i < 1000 ; i++) {
+      program.push(`${i} MOV A,1`);
+    }
+    program.push('1001 STOP');
+    machine.load(stitch(program));
+    assert.throws(()=>{machine.execute()},
+      function (err) {
+        if (err instanceof MaximumInstructionsException) {
+          return true;
+        }
+      });
+  });
+
+  it('should throw an exception after while executing morethan 1000 lines even code has infinite loop', () => {
+    const machine = new Machine();
+    let program = ['0 START','1 JMP 1','2 STOP'];
+    machine.load(stitch(program));
+    assert.throws(()=>{machine.execute()},
+      function (err) {
+        if (err instanceof MaximumInstructionsException) {
+          return true;
+        }
+      });
+  });
+
+  it('should not throw if program completed executing at 1000th line',( )=> {
+    const machine = new Machine();
+    let program = ['0 START'];
+    for (var i = 1; i < 999 ; i++) {
+      program.push(`${i} MOV A,1`);
+    }
+    program.push('1000 STOP');
+    machine.load(stitch(program));
+    assert.doesNotThrow(()=>{machine.execute()});
   });
 });

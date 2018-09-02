@@ -1,4 +1,5 @@
 const InvalidInstructionException = require('./commands/invalidInstructionException.js');
+const MaximumInstructionsException = require('../src/maximumInstructionsException.js');
 /**
  * Creates a reverse lookup of the index. This is used as a reducer function to create a lookup of line numbers to index.
  * @param {Object} obj
@@ -21,13 +22,15 @@ class ProgramCounter {
    * @param {Object} lineNumbers
    * @param {Object} fnTable
    */
-  constructor(lineNumbers, fnTable) {
+  constructor(lineNumbers, fnTable,limit = 1000) {
     this._lineNumbers = lineNumbers;
     this._fnTable = fnTable;
     this._indexOf = lineNumbers.reduce(lookupByLineNumber, {});
     this._currentIndex = 0;
     this._nextIndex = 1;
     this._halt = false;
+    this._limit = limit;
+    this._linesExecuted = 0;
   }
 
   /**
@@ -54,6 +57,10 @@ class ProgramCounter {
    * This method updates the current and next line indices respectively.
    */
   update() {
+    if(this._linesExecuted == this._limit) {
+      throw new MaximumInstructionsException();
+    }
+    ++this._linesExecuted;
     if (this._halt) return;
     this._currentIndex = this._nextIndex;
     this._nextIndex++;

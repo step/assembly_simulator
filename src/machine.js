@@ -4,9 +4,10 @@ const Stack = require('./stack.js');
 const Lines = require('./lines.js');
 
 class Machine {
-  constructor() {
+  constructor(stackSize,programCounterLimit) {
     this.lines = new Lines();
-    this.stack = new Stack();
+    this.stack = new Stack(stackSize);
+    this._programCounterLimit = programCounterLimit;
     this._reset();
   }
 
@@ -130,7 +131,8 @@ class Machine {
     let stack = this.stack;
     this.lines.execute(
       { regs, flags, stack },
-      this._updateCurrentExecState.bind(this)
+      this._updateCurrentExecState.bind(this),
+      this._programCounterLimit
     );
   }
 
