@@ -739,4 +739,27 @@ describe('Machine with program counter limit', () => {
         }
       });
   });
+
+  it('should throw an exception after while executing morethan 1000 lines even code has infinite loop', () => {
+    const machine = new Machine();
+    let program = ['0 START','1 JMP 1','2 STOP'];
+    machine.load(stitch(program));
+    assert.throws(()=>{machine.execute()},
+      function (err) {
+        if (err instanceof MaximumInstructionsException) {
+          return true;
+        }
+      });
+  });
+
+  it('should not throw if program completed executing at 1000th line',( )=> {
+    const machine = new Machine();
+    let program = ['0 START'];
+    for (var i = 1; i < 999 ; i++) {
+      program.push(`${i} MOV A,1`);
+    }
+    program.push('1000 STOP');
+    machine.load(stitch(program));
+    assert.doesNotThrow(()=>{machine.execute()});
+  });
 });

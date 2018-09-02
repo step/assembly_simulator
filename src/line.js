@@ -1,5 +1,6 @@
 const factories = require('./commands/commandFactories.js');
 const InvalidInstructionException = require('./commands/invalidInstructionException.js');
+
 const lib = {};
 
 class Line {
@@ -14,6 +15,10 @@ class Line {
     return this.lineNumber;
   }
 
+  getInstruction(){
+    return this.instruction;
+  }
+  
   populateFunctionTable(fnTable) {
     return this.command.populateFunctionTable(fnTable, this.lineNumber);
   }

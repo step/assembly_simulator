@@ -1,9 +1,11 @@
 const ProgramCounter = require('./programCounter.js');
+const MaximumInstructionsException = require('./maximumInstructionsException.js');
 
 class Lines {
   constructor() {
     this.lines = [];
     this.fnTable = {};
+    this._linesExecuted = 0;
   }
 
   add(line) {
@@ -17,15 +19,16 @@ class Lines {
     let lineNumbers = this.lines.map(l => l.getLineNumber());
     let programCounter = new ProgramCounter(lineNumbers, this.fnTable, programCounterLimit);
     let executor = () => {
-      let currentLineIndex = programCounter.getCurrentLineIndex();
-      let line = this.lines[currentLineIndex];
+      let line = this.lines[programCounter.getCurrentLineIndex()];
       state = line.execute(state.regs, state.flags, stack, programCounter);
-      try {
-        state.nextLine = programCounter.getNextLineNumber();
-      } catch (e) {
-        e.setInstruction(this.lines[currentLineIndex + 1]);
-        throw e;
+      ++this._linesExecuted;
+      if(this._linesExecuted > programCounter.limit) {
+        let exception = new MaximumInstructionsException();
+        exception.setLineNumber(line.getLineNumber());
+        exception.setInstruction(line.getInstruction());
+        throw exception;
       }
+      state.nextLine = programCounter.getNextLineNumber();
       programCounter.update();
       cb(state);
       return !programCounter.shouldHalt();

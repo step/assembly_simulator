@@ -39,6 +39,10 @@ class ProgramCounter {
   getCurrentLineNumber() {
     return this._lineNumbers[this._currentIndex];
   }
+  
+  get limit(){
+    return this._limit;
+  }
 
   /**
    * This method gets the next line number that will execute.
@@ -46,11 +50,6 @@ class ProgramCounter {
    */
   getNextLineNumber() {
     let nextLineNumber = this._lineNumbers[this._nextIndex];
-    if(this._nextIndex > this._limit) {
-      let exception = new MaximumInstructionsException();
-      exception.setLineNumber(this._nextIndex);
-      throw exception;
-    }
     if (this._halt || nextLineNumber == undefined) {
       return ' ';
     }
