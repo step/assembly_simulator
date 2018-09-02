@@ -15,10 +15,6 @@ class Line {
     return this.lineNumber;
   }
 
-  getInstruction(){
-    return this.instruction;
-  }
-  
   populateFunctionTable(fnTable) {
     return this.command.populateFunctionTable(fnTable, this.lineNumber);
   }

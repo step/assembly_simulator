@@ -30,6 +30,7 @@ class ProgramCounter {
     this._nextIndex = 1;
     this._halt = false;
     this._limit = limit;
+    this._linesExecuted = 0;
   }
 
   /**
@@ -38,10 +39,6 @@ class ProgramCounter {
    */
   getCurrentLineNumber() {
     return this._lineNumbers[this._currentIndex];
-  }
-  
-  get limit(){
-    return this._limit;
   }
 
   /**
@@ -60,6 +57,10 @@ class ProgramCounter {
    * This method updates the current and next line indices respectively.
    */
   update() {
+    if(this._linesExecuted == this._limit) {
+      throw new MaximumInstructionsException();
+    }
+    ++this._linesExecuted;
     if (this._halt) return;
     this._currentIndex = this._nextIndex;
     this._nextIndex++;

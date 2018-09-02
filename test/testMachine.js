@@ -708,7 +708,6 @@ describe('Machine with functions', () => {
 });
 
 describe('Machine with program counter limit', () => {
-  //// TODO: Have to check line number and instruction is being set or not
   it('should throw when program counter exceeds limit ', () => {
     const machine = new Machine(128,1);
     const program = [
@@ -738,7 +737,6 @@ describe('Machine with program counter limit', () => {
           return true;
         }
       });
-    assert.equal(machine.lines._linesExecuted,1000);
   });
 
   it('should throw an exception after while executing morethan 1000 lines even code has infinite loop', () => {
