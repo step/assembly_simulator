@@ -738,6 +738,7 @@ describe('Machine with program counter limit', () => {
           return true;
         }
       });
+    assert.equal(machine.lines._linesExecuted,1000);
   });
 
   it('should throw an exception after while executing morethan 1000 lines even code has infinite loop', () => {

@@ -20,14 +20,14 @@ class Lines {
     let programCounter = new ProgramCounter(lineNumbers, this.fnTable, programCounterLimit);
     let executor = () => {
       let line = this.lines[programCounter.getCurrentLineIndex()];
-      state = line.execute(state.regs, state.flags, stack, programCounter);
-      ++this._linesExecuted;
-      if(this._linesExecuted > programCounter.limit) {
+      if(this._linesExecuted == programCounter.limit) {
         let exception = new MaximumInstructionsException();
         exception.setLineNumber(line.getLineNumber());
         exception.setInstruction(line.getInstruction());
         throw exception;
       }
+      state = line.execute(state.regs, state.flags, stack, programCounter);
+      ++this._linesExecuted;
       state.nextLine = programCounter.getNextLineNumber();
       programCounter.update();
       cb(state);
