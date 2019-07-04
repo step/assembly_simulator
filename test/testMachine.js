@@ -17,13 +17,19 @@ describe('Machine loading', function() {
     const program = ['10 STAR'];
     assert.throws(() => machine.load(stitch(program)));
   });
-  
-  it('should throw an exception when there is a parse error in the arguments',() => {
+
+  it('should throw an exception when there is a parse error in the arguments', () => {
     const machine = new Machine();
     const missingArgumentProg = ['10 MOV A,'];
     const missingQuoteProg = ['10 PRN "HELLO'];
-    assert.throws(() => machine.load(stitch(missingArgumentProg)), InvalidInstructionException);
-    assert.throws(() => machine.load(stitch(missingQuoteProg)), InvalidInstructionException);
+    assert.throws(
+      () => machine.load(stitch(missingArgumentProg)),
+      InvalidInstructionException
+    );
+    assert.throws(
+      () => machine.load(stitch(missingQuoteProg)),
+      InvalidInstructionException
+    );
   });
 
   it('should ignore empty lines', function() {
@@ -690,5 +696,14 @@ describe('Machine with functions', () => {
     machine.load(stitch(program));
     machine.execute();
     assert.deepEqual({ A: 30, B: 0, C: 0, D: 0 }, machine.getRegs());
+  });
+});
+
+describe('Machine with infinite loops', () => {
+  it('should throw an exception when the machine executes more than 10 lines', () => {
+    const machine = new Machine(10);
+    const program = ['10 START', '20 JMP 10', '30 STOP'];
+    machine.load(stitch(program));
+    assert.throws(() => machine.execute());
   });
 });

@@ -1,7 +1,9 @@
+const MaxInstructionsExceededException = require('./maxInstructionsExceededException.js');
 const ProgramCounter = require('./programCounter.js');
 
 class Lines {
-  constructor() {
+  constructor(maxLinesToExecute) {
+    this.maxLinesToExecute = maxLinesToExecute;
     this.lines = [];
     this.fnTable = {};
   }
@@ -16,9 +18,14 @@ class Lines {
     let state = { regs, flags, halt: false };
     let lineNumbers = this.lines.map(l => l.getLineNumber());
     let programCounter = new ProgramCounter(lineNumbers, this.fnTable);
+    let numberOfLinesExecuted = 0;
     let executor = () => {
       let line = this.lines[programCounter.getCurrentLineIndex()];
       state = line.execute(state.regs, state.flags, stack, programCounter);
+      numberOfLinesExecuted++;
+      if (numberOfLinesExecuted > this.maxLinesToExecute) {
+        throw new MaxInstructionsExceededException(this.maxLinesToExecute);
+      }
       state.nextLine = programCounter.getNextLineNumber();
       programCounter.update();
       cb(state);

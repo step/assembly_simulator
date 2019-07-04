@@ -4,9 +4,10 @@ const Stack = require('./stack.js');
 const Lines = require('./lines.js');
 
 class Machine {
-  constructor() {
-    this.lines = new Lines();
+  constructor(maxLinesToExecute = 100) {
+    this.lines = new Lines(maxLinesToExecute);
     this.stack = new Stack();
+    this.maxLinesToExecute = maxLinesToExecute;
     this._reset();
   }
 
@@ -27,12 +28,13 @@ class Machine {
   }
 
   load(program) {
-    this.lines = new Lines();
     let instructions = program.split(/\n/);
     instructions.forEach((instruction, index) => {
       let line;
       try {
-        let { lineNumber, command, args, nonExecutableLine } = parse(instruction);
+        let { lineNumber, command, args, nonExecutableLine } = parse(
+          instruction
+        );
         if (nonExecutableLine) return;
         line = Line.create(lineNumber, command, args, index + 1, instruction);
       } catch (e) {
