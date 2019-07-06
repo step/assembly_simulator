@@ -28,6 +28,7 @@ class Machine {
   }
 
   load(program) {
+    this.lines = new Lines(this.maxLinesToExecute);
     let instructions = program.split(/\n/);
     instructions.forEach((instruction, index) => {
       let line;
