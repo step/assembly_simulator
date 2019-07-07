@@ -20,6 +20,7 @@ class Lines {
     let programCounter = new ProgramCounter(lineNumbers, this.fnTable);
     let numberOfLinesExecuted = 0;
     let executor = () => {
+      if(this.hasNoLines()) return false;
       let line = this.lines[programCounter.getCurrentLineIndex()];
       state = line.execute(state.regs, state.flags, stack, programCounter);
       numberOfLinesExecuted++;
@@ -32,6 +33,10 @@ class Lines {
       return !programCounter.shouldHalt();
     };
     return executor;
+  }
+
+  hasNoLines(){
+    return this.lines.length == 0;
   }
 
   execute(initState, cb) {
