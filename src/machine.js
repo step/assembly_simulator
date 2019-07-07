@@ -11,6 +11,10 @@ class Machine {
     this._reset();
   }
 
+  setMaxLinesToExecute(maxLinesToExecute){
+    this.maxLinesToExecute = maxLinesToExecute;
+  }
+
   _reset() {
     this._resetRegisters();
     this._resetFlags();
